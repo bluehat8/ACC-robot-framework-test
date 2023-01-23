@@ -414,11 +414,27 @@ Verificar trámite
     Wait Until Element Is Visible    name=clientControl$textAcountNumber 
     ${cuentaFiscal}=    get element attribute    id=clientControl_textAcountNumber    value
     Ingresar Datos De Salida XML    ArchivosXML/contribuNatural.xml    output      numerocontribuyente    ${cuentaFiscal}        
-    Log To Console    ${cuentaFiscal}
-    
+    Log To Console    Cuenta fiscal-Número de contribuyente:    ${cuentaFiscal}
     Sleep    3s    
 
 
+Registrar datos del trámite de sujeto pasivo
+    AND Ir a trámites predeterminados
+    Sleep    1s
+    AND Ingresar al trámite de sujeto pasivo
+    Sleep     1s
+    AND Validación de creación de Trámite con campos requeridos vacíos
+    AND Validación búsqueda de Cédula del solicitante, valor vacío
+    AND Validación búsqueda de Cédula del Solicitante, valor incorrecto
+    AND Búsqueda Cédula del solicitante, valor correcto
+    AND Registro de información requerida en la sección Contribuyente
+    AND Registro de información requerida en la sección dirección
+    AND Registro de información opcional en la sección dirección
+    AND Agregar la direccion en la sección dirección
+
+Crear y aceptar el trámite
+    AND Creacion del trámite
+    AND Aceptar creación del trámite
 
 
 *** Variables ***
@@ -440,27 +456,15 @@ ${rutaTelefono}     ArchivosXML/telefonoCorreo.xml
 
 Creacion de sujeto pasivo
     [Documentation]    Creación de sujeto pasivo natural
-    Abrir Navegador
+
+    Given Abrir Navegador
     Iniciar Grabacion
     [Tags]    Sujeto pasivo, trámite
-    Iniciar sesion
-    Ir a trámites predeterminados
-    Sleep    1s
-    Ingresar al trámite de sujeto pasivo
-    Sleep     1s
-    Validación de creación de Trámite con campos requeridos vacíos
-    Validación búsqueda de Cédula del solicitante, valor vacío
-    Validación búsqueda de Cédula del Solicitante, valor incorrecto
-    Búsqueda Cédula del solicitante, valor correcto
-    Registro de información requerida en la sección Contribuyente
-    Registro de información requerida en la sección dirección
-    Registro de información opcional en la sección dirección
-    Agregar la direccion en la sección dirección
-
-    Creacion del trámite
-    Aceptar creación del trámite
-    Aprobar el trámite
-    Verificar trámite
+    When Iniciar sesion
+    And Registrar datos del trámite de sujeto pasivo
+    And Crear y aceptar el trámite
+    And Aprobar el trámite
+    Then Verificar trámite
     Detener Grabacion
     Close All Browsers
 
