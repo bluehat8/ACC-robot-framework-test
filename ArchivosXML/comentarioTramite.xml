@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <Comentario del trámite-->
+<users>
+  <user>
+    <comentario>Esto es un tramite de prueba de control de calidad</comentario>
+  </user>
+  <user>
+    <comentario>Aca se elaboro otro tramite de prueba por control de calidad</comentario>
+  </user>
+</users>

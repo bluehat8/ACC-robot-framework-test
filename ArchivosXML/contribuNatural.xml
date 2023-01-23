@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<users>
+  <user>
+    <tipoPersona>Natural</tipoPersona>
+    <primerNom>Juan</primerNom>
+    <segundoNom>Pedro</segundoNom>
+    <documentoID>Cédula</documentoID>
+    <diaNaci>10</diaNaci>
+    <mesNaci>octubre</mesNaci>
+    <añoNaci>2010</añoNaci>
+    <comentario>Este es un contribuyente natural de prueba QA</comentario>
+    <primerApe>Fulano</primerApe>
+    <segundoApe>Sipriano</segundoApe>   
+    <identificacion>90011234567890AQA2</identificacion>
+    <genero>Masculino</genero>
+  
+    </user>
+
+    <output>
+    <numerocontribuyente>QA prueba2</numerocontribuyente>
+    </output>
+</users>

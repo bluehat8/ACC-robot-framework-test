@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <Dirección del contribuyente-->
+<users>
+  <user>
+    <tipoDireccion>Censo</tipoDireccion>
+    <calleIzquierda>Izquierda</calleIzquierda>
+    <calleDerecha>Derecha</calleDerecha>
+    <edificioCasa>Calle 1</edificioCasa>
+    <apartamento>Calle 2</apartamento>
+    <piso>Calle 3</piso>
+    <distrito>DISTRITO 1</distrito>
+    <barrio>AMARETTO</barrio>
+    <direccion>Del barrio indicado, 1 cuadra de la esquita, 2 a la otra esquina</direccion>
+    </user>
+    <user>
+      <tipoDireccion>Residencial</tipoDireccion>
+      <calleIzquierda>Calle fontana sur</calleIzquierda>
+      <calleDerecha>Calle fontana norte</calleDerecha>
+      <edificioCasa>Fontana</edificioCasa>
+      <apartamento>Numero 3</apartamento>
+      <piso>Piso 2</piso>
+      <distrito>DISTRITO 1</distrito>
+      <barrio>VILLA FONTANA ESTE</barrio>
+      <direccion>De clud terraza al tope, buscar camino San Agustin</direccion>
+      </user>
+</users>
