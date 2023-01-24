@@ -21,8 +21,13 @@ def imprime():
 
     print(df)
     print("\nTotal de casos de prueba: ", len(escenario))
-    print("\nTotal de casos de prueba aprobados: ", len(df['Estado']=='PASS'))
-    #print("\nTotal de casos de prueba fallidos: ", len(df['Estado']=='FAIL'))
+    
+    dpass=df.value_counts(df['Estado']=='PASS')
+    dfail=df.value_counts(df['Estado']=='FAIL')
+    
+    print("\nTotal de casos de prueba aprobados: ", dpass)
+    
+    print("\nTotal de casos de prueba fallidos: ", dfail)
 
 
 imprime()  
