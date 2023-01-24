@@ -1,5 +1,13 @@
-from behave import give, then, when, step
+from behave import given, then, when, step
 
-@given("I create a new User")
-def login_with_credentials(context, item):
-    print('The item is {}'.formate(item))
+@given('credentials are given')
+def cred_are_given(context):
+    print('user id: playok.com')
+
+@when('we input correct credentials')
+def step_impl(context):
+    print('Credenciales correctas')
+    
+@then('login will be successful')
+def step_impl(context):
+    print('Bienvenido')
