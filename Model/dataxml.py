@@ -9,25 +9,31 @@ raiz = arbol.getroot()
 def imprime():
     escenario=[]
     
-    for hijo in raiz.findall('./suite/test/kw/status'):
-        escenario.append([hijo.attrib.get('status'), hijo.attrib.get('starttime'), hijo.attrib.get('endtime')])
+    for hijo in raiz.findall('./suite/test/kw'):
+        escenario.append([hijo.attrib.get('name'),
+                          hijo.text   
+            ,hijo.find('status').attrib.get('status'), hijo.find('status').attrib.get('starttime'), 
+            hijo.find('status').attrib.get('endtime')])
         
-    
-   # df = pd.DataFrame(escenario)
-    
+        
     df = pd.DataFrame(escenario,
-                  columns=['Estado','Starttime', 'Endtime'],
+                  columns=['Caso','Output','Estado','Starttime', 'Endtime'],
                   )
 
     print(df)
-    print("\nTotal de casos de prueba: ", len(escenario))
+    print("\nSteps de casos de prueba: ", len(escenario))
     
-    dpass=df.value_counts(df['Estado']=='PASS')
-    dfail=df.value_counts(df['Estado']=='FAIL')
+    nombres=[]
+    for hijo in raiz.findall('./suite/test'):
+        nombres.append(hijo.find('kw/doc').text)
+        print('Texto de salida: ',nombres)
+
+    print(nombres)
     
-    print("\nTotal de casos de prueba aprobados: ", dpass)
     
-    print("\nTotal de casos de prueba fallidos: ", dfail)
+    for nodo in raiz.iter('doc'):
+        for elemento in nodo.iter():
+            print("Notas: ", elemento.text)
 
 
 imprime()  

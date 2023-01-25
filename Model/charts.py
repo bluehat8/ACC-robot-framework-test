@@ -20,8 +20,8 @@ def create_chart(overall_result,tag_results =''):
 
     ## Total Execution Report
     if overall_result != '':
-        overall_list.append(int(overall_result['pass']))
-        overall_list.append(int(overall_result['fail']))
+        overall_list.append(int(overall_result[0]))
+        overall_list.append(int(overall_result[1]))
         fig = {
           "data": [
             {
@@ -69,18 +69,20 @@ def create_chart(overall_result,tag_results =''):
         tag_list.append(key)
 
     for tags in tag_list:
-        passed_values.append(tag_results[tags]['pass'])
-        failed_values.append(tag_results[tags]['fail'])
+        passed_values.append(1)
+        failed_values.append(0)
 
     trace1 = go.Bar(
         x=tag_list,
         y=passed_values,
-        name='Passed'
+        name='Passed',
+        marker_color='rgb(12, 227, 107)'
     )
     trace2 = go.Bar(
         x=tag_list,
         y=failed_values,
-        name='Failed'
+        name='Failed',
+        #marker_color='red'
     )
 
     data = [trace1, trace2]
@@ -93,6 +95,11 @@ def create_chart(overall_result,tag_results =''):
     group_bar = go.Figure(data=data, layout=layout)
     # plotly.offline.plot(fig, filename='grouped-bar.html',validate=False)
 
+    #group_bar.update_layout(
+     #   ='blue'
+    #)
+   
     cust_wise_percent = plotly.offline.plot(group_bar, output_type='div')
     html_data += cust_wise_percent
     return html_data
+
