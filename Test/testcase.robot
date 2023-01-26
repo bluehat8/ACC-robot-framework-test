@@ -414,7 +414,7 @@ Verificar trámite
     Wait Until Element Is Visible    name=clientControl$textAcountNumber 
     ${cuentaFiscal}=    get element attribute    id=clientControl_textAcountNumber    value
     Ingresar Datos De Salida XML    ArchivosXML/contribuNatural.xml    output      numerocontribuyente    ${cuentaFiscal}        
-    Log To Console    Cuenta fiscal-Número de contribuyente:    ${cuentaFiscal}
+    Log To Console    Cuenta fiscal-Número de contribuyente:    ${cuentaFiscal}    value
     Sleep    3s    
 
 
