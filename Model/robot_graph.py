@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as etree
 from io import StringIO
+import dataxml as dataxml
 
 
 from charts import create_chart
@@ -72,20 +73,29 @@ def data_extractor(file_name):
 
 def robo_graph_generator():
 
+
+
     overall_result,tag_results = data_calculator(r"C:\Users\Usuario\Documents\python testing\ACC-Robot-Framework-Testing\Model\output.xml")
     overall_result=data_extractor(r"C:\Users\Usuario\Documents\python testing\ACC-Robot-Framework-Testing\Model\output.xml")
     total_pass = int(overall_result[0])
     total_fail = int(overall_result[1])
     total_result = total_pass + total_fail
-
+    dataxml.obtener_xml_robot('results/output.xml')
 
 
     all_test_case_data ="""<div align="center" style="vertical-align:bottom">
 <div align="center" style="vertical-align:bottom">
-<table border="1" align="centre">
+<table border="1" align="center">
 <tr bgcolor = 0CE36B align="center"><th>Total Test Cases</th><th>Passed</th><th>Failed</th></tr>
 <tr><th>"""+str(total_result)+"""</th><th>"""+ str(total_pass) +"""</th><th>"""+ str(total_fail) +"""</th></tr>
-</table></div></div>"""
+</table></div></div>
+"""
+    for i in range(3):
+        all_test_case_data=all_test_case_data+"""<div align="center" style="vertical-align:bottom">
+<table border="1" align="center">
+<tr bgcolor = red align="center"><th>Total Test Cases</th><th>Passed</th><th>Failed</th></tr>
+<tr><th>"""+str(i)+"""</th><th>"""+ str(i) +"""</th><th>"""+ str(i) +"""</th></tr>
+</table></div>"""
 
 
     html_data = create_chart(overall_result,tag_results)
