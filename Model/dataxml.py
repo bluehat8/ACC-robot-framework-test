@@ -86,13 +86,45 @@ def obtener_xml_robot(xml):
     return test_lista
 
 
+def obtener_lst_suites(xml):
+    rbol = ET.parse(xml)
+    raiz = arbol.getroot()
+    test_lista = []
+
+
+    for test in raiz.findall('suite'):
+        suiteName=test.get('name')
+        suiteTime=test.find('status').get('endtime')
+        testNuevo= raiz.findall('./statistics')
+        suitePass=testNuevo[0].find('total/stat').attrib.get('pass')
+        suiteFail=testNuevo[0].find('total/stat').attrib.get('fail')
+        suiteStatus='FAIL'
+        if suiteFail=='0':
+            suiteStatus='PASS'
+        
+        test_dict={
+            'Nombre':suiteName,
+            'Tiempo':suiteTime,
+            'Pass': suitePass,
+            'Fail': suiteFail,
+            'Status': suiteStatus
+        }
+        test_lista.append(test_dict)
+
+    
+    return test_lista
+
+print(obtener_lst_suites('results/output.xml'))
+
+
+
 #imprime()  
 #print(obtener_xml_robot('results/output.xml'))
 print("Nombre de caso de prueba: ",obtener_xml_robot('results/output.xml')[0]['nombre_test'])
 print("Given: ", obtener_xml_robot('results/output.xml')[0]['keywords'][0])
-print(obtener_xml_robot('results/output.xml')[0]['info_mensajes'][0])
+print(obtener_xml_robot('results/output.xml')[0]['info_mensajes'])
 print("Then: ",obtener_xml_robot('results/output.xml')[0]['keywords'][1])
-print(obtener_xml_robot('results/output.xml')[0]['info_mensajes'][1])
+print(obtener_xml_robot('results/output.xml')[0]['info_mensajes'])
 print("Start-time: ",obtener_xml_robot('results/output.xml')[0]['startime'])
 print("End-time: ", obtener_xml_robot('results/output.xml')[0]['endtime'])
 print("Elapsed-time: ",obtener_xml_robot('results/output.xml')[0]['elapsed-time'])

@@ -8,6 +8,10 @@ Library    BuiltIn
 ${mensaje}=    aprobado
 
 *** Keywords ***
+
+LogError
+    Fail
+
 Abrir navegador
     Open Browser    https://almacc.tustributos.com    chrome
     Maximize Browser Window
@@ -17,6 +21,8 @@ Abrir navegador
 
 Iniciar sesion
     Input Text      name=txtUserName    gamayatx
+    Wait Until Element Is Visible    name=usuerioprueba
+    Run Keyword If Test Failed    LogError    
     Input Text    name=txtUserPassword    Agas1234
     Log    Usuario:gamayatx    console=yes
     #BuiltIn.Set Test Message     Usuario:gamayatx
@@ -49,3 +55,11 @@ Test Guardar Mensaje
     # ...    ELSE    Set Variable    ${mensaje}    Mensaje de Prueba No Pasó
 
     #Log    ${mensaje}
+Test Cobro general
+    [Documentation]     Le cobra a los contribuyentes
+    [Tags]    Prueba de cobro general
+    Abrir navegador
+    Given Iniciar sesion
+    Log     user:gamatyatx
+    Then Aplicar roles básicos
+    Log   ${rolbasico}
