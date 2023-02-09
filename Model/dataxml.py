@@ -1,6 +1,9 @@
 import xml.etree.cElementTree as ET
 import pandas as pd
 import datetime as datetime
+import xml.etree.ElementTree as etree
+from io import StringIO
+
 
 
 arbol = ET.parse('results/output.xml')
@@ -62,9 +65,17 @@ def obtener_xml_robot(xml):
         for keyword in test.findall('kw'):
             if keyword.get('name').startswith('Given') or keyword.get('name').startswith('Then') or keyword.get('name').startswith('And'):
                 keywords.append(keyword.get('name'))
+            
+            keywordss=keyword.get('name')
+        #if keyword.get('name') == "Log":
+        
+        
+        # for mensaje_info in test.iter('kw'):
+        #     info_mensajes.append(mensaje_info.find('doc').text)
 
-        for mensaje_info in test.findall('kw/msg'):
-            info_mensajes.append(mensaje_info.text)
+        for mensaje_info in test.iter('kw'):
+            if mensaje_info.get('name')=='Log':                  
+                 info_mensajes.append(mensaje_info.find('msg').text)
             
         test_dict = {
             'nombre_test': nombre_test,
@@ -77,7 +88,7 @@ def obtener_xml_robot(xml):
         test_lista.append(test_dict)
     
         
-    # df = pd.DataFrame(test_lista)
+   # df = pd.DataFrame(test_lista)
    # df = pd.DataFrame(df, index=[0], columns=['nombre_test', 'keywords', 'info_mensajes'])
    # print(df)
    # print(df_new)
@@ -114,17 +125,60 @@ def obtener_lst_suites(xml):
     
     return test_lista
 
+
+
+
 print(obtener_lst_suites('results/output.xml'))
 
 
 
+def extraer_texto_falla(archivo_xml):
+    tree = ET.parse(archivo_xml)
+    root = tree.getroot()
+    for child in root:
+        if child.tag == 'suite':
+            for subchild in child:
+                if subchild.tag == 'test':
+                    for subsubchild in subchild:
+                        if subsubchild.tag == 'status':
+                            if subsubchild.attrib['status'] == 'FAIL':
+                                for subsubsubchild in subchild:
+                                    if subsubsubchild.tag == 'kw':
+                                        for subsubsubsubchild in subsubsubchild:
+                                            if subsubsubsubchild.tag == 'kw':
+                                                #return subsubsubsubchild.text
+                                                
+                                                for subsubsubsubchild2 in subsubsubsubchild:
+                                                    if subsubsubsubchild2.tag == 'msg':
+                                                        subsubsubsubchild2.get('timestamp')
+
+# print(extraer_texto_falla('results/output.xml'))
+
 #imprime()  
 #print(obtener_xml_robot('results/output.xml'))
-print("Nombre de caso de prueba: ",obtener_xml_robot('results/output.xml')[0]['nombre_test'])
-print("Given: ", obtener_xml_robot('results/output.xml')[0]['keywords'][0])
-print(obtener_xml_robot('results/output.xml')[0]['info_mensajes'])
-print("Then: ",obtener_xml_robot('results/output.xml')[0]['keywords'][1])
-print(obtener_xml_robot('results/output.xml')[0]['info_mensajes'])
-print("Start-time: ",obtener_xml_robot('results/output.xml')[0]['startime'])
-print("End-time: ", obtener_xml_robot('results/output.xml')[0]['endtime'])
-print("Elapsed-time: ",obtener_xml_robot('results/output.xml')[0]['elapsed-time'])
+# print("Nombre de caso de prueba: ",obtener_xml_robot('results/output.xml')[0]['nombre_test'])
+# print("Given: ", obtener_xml_robot('results/output.xml')[0]['keywords'][0])
+# print(obtener_xml_robot('results/output.xml')[0]['info_mensajes'])
+# print("Then: ",obtener_xml_robot('results/output.xml')[0]['keywords'][1])
+# print(obtener_xml_robot('results/output.xml')[0]['info_mensajes'])
+# print("Start-time: ",obtener_xml_robot('results/output.xml')[0]['startime'])
+# print("End-time: ", obtener_xml_robot('results/output.xml')[0]['endtime'])
+# print("Elapsed-time: ",obtener_xml_robot('results/output.xml')[0]['elapsed-time'])
+
+
+def extraer_xml_datatest(xmla):
+    with open(xmla) as f:
+        xml = f.read()
+    parser = ET.XMLParser(encoding="utf-8")
+    context = etree.iterparse(StringIO(xml))
+        
+    for action, elem in context:
+        if elem.tag=='msg':
+            
+            if elem.attrib['level']=="FAIL" and elem.text!="" :
+            
+                print(elem.text)
+                
+                
+print(extraer_xml_datatest('results/output.xml'))
+        

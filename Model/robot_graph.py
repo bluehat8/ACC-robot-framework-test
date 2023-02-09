@@ -24,6 +24,7 @@ def data_calculator(file_name):
         if elem.tag == 'tag':
             list_of_tags.append(elem.text)
         if elem.tag == 'stat':
+        
             try:
                 if elem.text == 'All Tests':
                     if elem.attrib.items()[0][0] == "fail":
@@ -40,6 +41,8 @@ def data_calculator(file_name):
                 continue
 
     return overall_result,tag_results
+
+
 
 
 

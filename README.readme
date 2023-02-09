@@ -1,0 +1,19 @@
+All libraries and frameworks
+
+pandas
+robotframework
+robotframework-metrics
+Selenium2Library
+ScreenCapLibrary
+jira
+
+/*How to install all libraries*/
+use pip install [Library-framework name] to intall all libraries
+
+Examples:
+
+pip install robotframework
+pip install robotframework-Selenium2Library
+pip install robotframework-ScreenCapLibrary
+pip install pandas
+

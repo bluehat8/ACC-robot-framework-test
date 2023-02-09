@@ -1,7 +1,7 @@
 *** Settings ***
 Library    Selenium2Library
 Library    ScreenCapLibrary
-Library    JIRALibrary
+#Library    JIRALibrary
 Library    ../xmlReader.py
 
 *** Keywords ***
