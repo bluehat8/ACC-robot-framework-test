@@ -52,7 +52,12 @@ def imprime():
 def obtener_xml_robot(xml):
     arbol = ET.parse(xml)
     raiz = arbol.getroot()
+    with open(xml) as f:
+        xml = f.read()
+    parser = ET.XMLParser(encoding="utf-8")
+    arbol = etree.iterparse(StringIO(xml))
     test_lista = []
+    
 
     for test in raiz.findall('./suite/test'):
         nombre_test = test.get('name')
@@ -66,16 +71,16 @@ def obtener_xml_robot(xml):
             if keyword.get('name').startswith('Given') or keyword.get('name').startswith('Then') or keyword.get('name').startswith('And'):
                 keywords.append(keyword.get('name'))
             
-            keywordss=keyword.get('name')
         #if keyword.get('name') == "Log":
         
+
         
         # for mensaje_info in test.iter('kw'):
         #     info_mensajes.append(mensaje_info.find('doc').text)
 
-        for mensaje_info in test.iter('kw'):
-            if mensaje_info.get('name')=='Log':                  
-                 info_mensajes.append(mensaje_info.find('msg').text)
+        # for mensaje_info in test.iter('kw'):
+        #     if mensaje_info.get('name')=='Log':                  
+        #          info_mensajes.append(mensaje_info.find('msg').text)
             
         test_dict = {
             'nombre_test': nombre_test,
@@ -155,7 +160,7 @@ def extraer_texto_falla(archivo_xml):
 # print(extraer_texto_falla('results/output.xml'))
 
 #imprime()  
-#print(obtener_xml_robot('results/output.xml'))
+print(obtener_xml_robot('results/output.xml'))
 # print("Nombre de caso de prueba: ",obtener_xml_robot('results/output.xml')[0]['nombre_test'])
 # print("Given: ", obtener_xml_robot('results/output.xml')[0]['keywords'][0])
 # print(obtener_xml_robot('results/output.xml')[0]['info_mensajes'])
@@ -171,14 +176,15 @@ def extraer_xml_datatest(xmla):
         xml = f.read()
     parser = ET.XMLParser(encoding="utf-8")
     context = etree.iterparse(StringIO(xml))
+    list=[]
         
     for action, elem in context:
         if elem.tag=='msg':
             
-            if elem.attrib['level']=="FAIL" and elem.text!="" :
-            
-                print(elem.text)
-                
+            if elem.attrib['level']=="FAIL":
+                #print(elem.text)
+                list.append(elem.text)
+    return list           
                 
 print(extraer_xml_datatest('results/output.xml'))
         
