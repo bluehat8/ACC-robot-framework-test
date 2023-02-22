@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.0.2 (Python 3.11.1 on win32)" generated="20230209 13:18:17.346" rpa="false" schemaversion="3">
+<robot generator="Robot 6.0.2 (Python 3.11.1 on win32)" generated="20230222 10:27:05.535" rpa="false" schemaversion="3">
 <suite id="s1" name="Pruebas" source="C:\Users\Usuario\Documents\python testing\ACC-Robot-Framework-Testing\Test\pruebas.robot">
-<test id="s1-t1" name="Test Guardar Mensaje" line="42">
+<test id="s1-t1" name="Test Login" line="37">
 <kw name="Abrir navegador">
 <kw name="Open Browser" library="Selenium2Library">
 <arg>https://almacc.tustributos.com</arg>
 <arg>chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20230209 13:18:17.829" level="INFO">Opening browser 'chrome' to base url 'https://almacc.tustributos.com'.</msg>
-<status status="PASS" starttime="20230209 13:18:17.827" endtime="20230209 13:18:21.408"/>
+<msg timestamp="20230222 10:27:13.074" level="INFO">Opening browser 'chrome' to base url 'https://almacc.tustributos.com'.</msg>
+<status status="PASS" starttime="20230222 10:27:13.074" endtime="20230222 10:27:18.209"/>
 </kw>
 <kw name="Maximize Browser Window" library="Selenium2Library">
 <doc>Maximizes current browser window.</doc>
-<status status="PASS" starttime="20230209 13:18:21.408" endtime="20230209 13:18:21.516"/>
+<status status="PASS" starttime="20230222 10:27:18.209" endtime="20230222 10:27:18.319"/>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <arg>2s</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20230209 13:18:23.517" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" starttime="20230209 13:18:21.516" endtime="20230209 13:18:23.519"/>
+<msg timestamp="20230222 10:27:20.320" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20230222 10:27:18.319" endtime="20230222 10:27:20.322"/>
 </kw>
-<status status="PASS" starttime="20230209 13:18:17.827" endtime="20230209 13:18:23.520"/>
+<status status="PASS" starttime="20230222 10:27:13.073" endtime="20230222 10:27:20.324"/>
 </kw>
 <kw name="Given Iniciar sesion">
 <kw name="Input Text" library="Selenium2Library">
 <arg>name=txtUserName</arg>
 <arg>gamayatx</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20230209 13:18:23.530" level="INFO">Typing text 'gamayatx' into text field 'name=txtUserName'.</msg>
-<status status="PASS" starttime="20230209 13:18:23.526" endtime="20230209 13:18:23.637"/>
+<msg timestamp="20230222 10:27:20.336" level="INFO">Typing text 'gamayatx' into text field 'name=txtUserName'.</msg>
+<status status="PASS" starttime="20230222 10:27:20.330" endtime="20230222 10:27:20.513"/>
 </kw>
 <kw name="Input Text" library="Selenium2Library">
 <arg>name=txtUserPasswor</arg>
 <arg>Agas1234</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20230209 13:18:23.638" level="INFO">Typing text 'Agas1234' into text field 'name=txtUserPasswor'.</msg>
-<msg timestamp="20230209 13:18:23.836" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-1.png"&gt;&lt;img src="selenium-screenshot-1.png" width="800px"&gt;&lt;/a&gt;</msg>
-<msg timestamp="20230209 13:18:23.837" level="FAIL">Element with locator 'name=txtUserPasswor' not found.</msg>
-<status status="FAIL" starttime="20230209 13:18:23.637" endtime="20230209 13:18:23.840"/>
+<msg timestamp="20230222 10:27:20.514" level="INFO">Typing text 'Agas1234' into text field 'name=txtUserPasswor'.</msg>
+<msg timestamp="20230222 10:27:20.692" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-2.png"&gt;&lt;img src="selenium-screenshot-2.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20230222 10:27:20.693" level="FAIL">Element with locator 'name=txtUserPasswor' not found.</msg>
+<status status="FAIL" starttime="20230222 10:27:20.513" endtime="20230222 10:27:20.752"/>
 </kw>
 <kw name="Log" library="BuiltIn">
 <arg>Usuario:gamayatx</arg>
 <arg>console=yes</arg>
 <doc>Logs the given message with the given level.</doc>
-<status status="NOT RUN" starttime="20230209 13:18:23.841" endtime="20230209 13:18:23.841"/>
+<status status="NOT RUN" starttime="20230222 10:27:20.752" endtime="20230222 10:27:20.752"/>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <arg>2s</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="NOT RUN" starttime="20230209 13:18:23.842" endtime="20230209 13:18:23.842"/>
+<status status="NOT RUN" starttime="20230222 10:27:20.752" endtime="20230222 10:27:20.752"/>
 </kw>
-<status status="FAIL" starttime="20230209 13:18:23.524" endtime="20230209 13:18:23.842"/>
+<status status="FAIL" starttime="20230222 10:27:20.328" endtime="20230222 10:27:20.753"/>
 </kw>
 <kw name="Then Aplicar roles básicos">
-<status status="NOT RUN" starttime="20230209 13:18:23.843" endtime="20230209 13:18:23.844"/>
+<status status="NOT RUN" starttime="20230222 10:27:20.753" endtime="20230222 10:27:20.754"/>
 </kw>
 <doc>Guarda el mensaje de Pass o Fail en un archivo xml</doc>
 <tag>Prueba</tag>
-<status status="FAIL" starttime="20230209 13:18:17.825" endtime="20230209 13:18:23.844">Element with locator 'name=txtUserPasswor' not found.</status>
+<status status="FAIL" starttime="20230222 10:27:13.071" endtime="20230222 10:27:20.754">Element with locator 'name=txtUserPasswor' not found.</status>
 </test>
 <doc>Prueba de Robot Framework que guarda un mensaje si pasó o no el test en el archivo XML.</doc>
-<status status="FAIL" starttime="20230209 13:18:17.353" endtime="20230209 13:18:23.846"/>
+<status status="FAIL" starttime="20230222 10:27:05.544" endtime="20230222 10:27:20.756"/>
 </suite>
 <statistics>
 <total>

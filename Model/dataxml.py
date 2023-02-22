@@ -187,4 +187,6 @@ def extraer_xml_datatest(xmla):
     return list           
                 
 print(extraer_xml_datatest('results/output.xml'))
+
+
         

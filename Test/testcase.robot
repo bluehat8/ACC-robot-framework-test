@@ -8,6 +8,8 @@ Library    ../xmlReader.py
 
 Abrir Navegador
     Open Browser    https://almacc.tustributos.com    chrome
+    ${browser_info}=    Execute Javascript    return navigator.userAgent;
+   # Log        Navegador: ${browser_info.split('/')[2]}       Versión: ${browser_info.split('/')[2]}   
     Maximize Browser Window
 
 
