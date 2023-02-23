@@ -456,14 +456,23 @@ ${rutaTelefono}     ArchivosXML/telefonoCorreo.xml
 
 *** Test Cases ***
 
-Creacion de sujeto pasivo
-    [Documentation]    Creación de sujeto pasivo natural
 
+Autenticar credenciales
+    [Documentation]    Se automatizan las pruebas para autenticar el inicio de sesión en ARI CC
     Given Abrir Navegador
     Iniciar Grabacion
-    [Tags]    Sujeto pasivo, trámite
+    [Tags]    Test Login
     When Iniciar sesion
-    And Registrar datos del trámite de sujeto pasivo
+    Detener Grabacion
+
+
+
+Creacion de sujeto pasivo
+    [Documentation]    Creación de sujeto pasivo natural
+    Go to     https://almacc.tustributos.com/frames.aspx  
+    Iniciar Grabacion
+    [Tags]    Sujeto pasivo
+    Given Registrar datos del trámite de sujeto pasivo
     And Crear y aceptar el trámite
     And Aprobar el trámite
     Then Verificar trámite
