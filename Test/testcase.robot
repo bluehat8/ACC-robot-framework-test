@@ -468,7 +468,7 @@ Autenticar credenciales
 
 
 Creacion de sujeto pasivo
-    [Documentation]    Creación de sujeto pasivo natural
+    [Documentation]       Creación de sujeto pasivo natural
     Go to     https://almacc.tustributos.com/frames.aspx  
     Iniciar Grabacion
     [Tags]    Sujeto pasivo
