@@ -111,99 +111,31 @@
           display:none;  
       }
 
-      #sidebar{
-        background: rgb(20, 20, 20);
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 250px;
-        height: 100vh;
-        overflow-y: auto;
-        overflow-x: hidden;
-        transition: all 0.3s ease;
-      }
-
-      #navbar li a{
-        color:rgb(173, 171, 171);
-        background: transparent
-      }
-
-      #navbar li a:hover{
-        background: rgb(59, 59, 59);
-        border-radius: 5px;
-      }
-
-      .sidebar-logo-container {
-        /*background-color: rgba(37, 37, 37, 0.6);*/
-        border-radius: 8px;
-        padding-left: 3px;
-        display: flex;
-    }
-    .logo-container {
-        max-width: 50px;
-        background-color: rgb(255, 255, 255, 0.1);
-        border-radius: 5px;
-        margin: 8px;
-        padding: 6px 8px;
-    }
-    .brand-name-container {
-        margin: 10px 55px 0px 2px;
-        padding: 0px;
-    }
-    .logo-sidebar {
-        width: 100%;
-        height: auto;
-    }
-    .brand-name {
-        color: white;
-        margin: 0px;
-        line-height: 1.1rem; 
-        font-size: 16px;
-        letter-spacing: 1px;
-        font-family: 'Roboto', sans-serif;
-    }
-    .brand-subname {
-        font-weight: 300;
-        font-size: 14px;
-    }
-
     </style>
   </head>
   <body>
     <div class="loader"></div>
     <!-- Fixed navbar -->
-    <nav id="sidebar" class="navbar navbar-dark navbar-fixed-left fixed-top py-3 d-flex flex-column">
-      <div class="sidebar-logo-container">
-        <div class="logo-container">
-            <img class="logo-sidebar" src="data:image/jpg;base64,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" />
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand">Metrics</a>
         </div>
-        <div class="brand-name-container">
-            <p class="brand-name">
-                TX<br />
-                <span class="brand-subname">
-                    Metrics
-                </span>
-            </p>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#" class="tablink" id="defaultOpen" onclick="openPage('dashboard', this, '#fc6666')">Dashboard</a></li>
+            <li><a href="#" class="tablink" onclick="openPage('suiteMetrics', this, '#fc6666'); executeDataTable('#sm',6)">Suite</a></li>
+            <li><a href="#" class="tablink" onclick="openPage('testMetrics', this, '#fc6666'); executeDataTable('#tm',3)">Test</a></li>
+            <li class=""><a href="#" class="tablink" onclick="openPage('keywordMetrics', this, '#fc6666'); executeDataTable('#km',3)">Keyword</a></li>
+            <li class=""><a href="#" class="tablink" onclick="openPage('keywordMetricsTime', this, '#fc6666'); executeDataTable('#kmt',1)">KW Times</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a>Execution Time(m): 0.39</a></li>
+          </ul>
         </div>
-    </div>
-      <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav sidebar-nav flex-column" style="margin-top:40px">
-          <li class="nav-item active" style="text-align:left"><a href="#" class="tablink" id="defaultOpen" onclick="openPage('dashboard', this, '#fc6666')">Dashboard</a></li>
-          <li class="nav-item"><a href="#" class="tablink" onclick="openPage('suiteMetrics', this, '#fc6666'); executeDataTable('#sm',6)">Suite</a></li>
-          <li class="nav-item"><a href="#" class="tablink" onclick="openPage('testMetrics', this, '#fc6666'); executeDataTable('#tm',3)">Test</a></li>
-          <li class=""><a href="#" class="tablink" onclick="openPage('keywordMetrics', this, '#fc6666'); executeDataTable('#km',3)">Keyword</a></li>
-          <li class="nav-item "><a href="#" class="tablink" onclick="openPage('keywordMetricsTime', this, '#fc6666'); executeDataTable('#kmt',1)">KW Times</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-center">
-          <li><a>Execution Time(m): 0.39</a></li>
-        </ul>
       </div>
     </nav>
-    
-    
-    
-    
-    
+
     <div class="container">
 
       <!-- Dashboard Data -->
@@ -460,7 +392,7 @@
           <tbody>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Autenticar credenciales</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Abrir Navegador</td>
                 
                   <td style="color: green"> PASS</td>
@@ -469,7 +401,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Abrir Navegador</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Open Browser</td>
                 
                   <td style="color: green"> PASS</td>
@@ -478,7 +410,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Abrir Navegador</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Execute Javascript</td>
                 
                   <td style="color: green"> PASS</td>
@@ -487,7 +419,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Abrir Navegador</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Maximize Browser Window</td>
                 
                   <td style="color: green"> PASS</td>
@@ -496,7 +428,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Autenticar credenciales</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Iniciar Grabacion</td>
                 
                   <td style="color: green"> PASS</td>
@@ -505,7 +437,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Iniciar Grabacion</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">ScreenCapLibrary.Start Video Recording</td>
                 
                   <td style="color: green"> PASS</td>
@@ -514,7 +446,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Autenticar credenciales</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">When Iniciar sesion</td>
                 
                   <td style="color: green"> PASS</td>
@@ -523,7 +455,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">When Iniciar sesion</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my username</td>
                 
                   <td style="color: green"> PASS</td>
@@ -532,7 +464,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my username</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Leer username</td>
                 
                   <td style="color: green"> PASS</td>
@@ -541,7 +473,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Leer username</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
                 
                   <td style="color: green"> PASS</td>
@@ -550,7 +482,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my username</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
                 
                   <td style="color: green"> PASS</td>
@@ -559,7 +491,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">When Iniciar sesion</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my password</td>
                 
                   <td style="color: green"> PASS</td>
@@ -568,7 +500,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my password</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Leer password</td>
                 
                   <td style="color: green"> PASS</td>
@@ -577,7 +509,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Leer password</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
                 
                   <td style="color: green"> PASS</td>
@@ -586,7 +518,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my password</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
                 
                   <td style="color: green"> PASS</td>
@@ -595,7 +527,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">When Iniciar sesion</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Login</td>
                 
                   <td style="color: green"> PASS</td>
@@ -604,7 +536,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Login</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Button</td>
                 
                   <td style="color: green"> PASS</td>
@@ -613,7 +545,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">When Iniciar sesion</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Login Succesful</td>
                 
                   <td style="color: green"> PASS</td>
@@ -622,7 +554,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Login Succesful</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Page Should Contain</td>
                 
                   <td style="color: green"> PASS</td>
@@ -631,7 +563,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Autenticar credenciales</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Detener Grabacion</td>
                 
                   <td style="color: green"> PASS</td>
@@ -640,7 +572,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Detener Grabacion</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">ScreenCapLibrary.Stop Video Recording</td>
                 
                   <td style="color: green"> PASS</td>
@@ -649,7 +581,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Go To</td>
                 
                   <td style="color: green"> PASS</td>
@@ -658,7 +590,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Iniciar Grabacion</td>
                 
                   <td style="color: green"> PASS</td>
@@ -667,7 +599,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Iniciar Grabacion</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">ScreenCapLibrary.Start Video Recording</td>
                 
                   <td style="color: green"> PASS</td>
@@ -676,7 +608,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
                 
                   <td style="color: red"> FAIL</td>
@@ -685,7 +617,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ir a trámites predeterminados</td>
                 
                   <td style="color: green"> PASS</td>
@@ -694,7 +626,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ir a trámites predeterminados</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Get Title</td>
                 
                   <td style="color: green"> PASS</td>
@@ -703,7 +635,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ir a trámites predeterminados</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select Frame</td>
                 
                   <td style="color: green"> PASS</td>
@@ -712,7 +644,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ir a trámites predeterminados</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Wait Until Element Is Visible</td>
                 
                   <td style="color: green"> PASS</td>
@@ -721,7 +653,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ir a trámites predeterminados</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
                 
                   <td style="color: green"> PASS</td>
@@ -730,7 +662,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
                 
                   <td style="color: red"> FAIL</td>
@@ -739,7 +671,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Get Title</td>
                 
                   <td style="color: green"> PASS</td>
@@ -748,7 +680,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Unselect Frame</td>
                 
                   <td style="color: green"> PASS</td>
@@ -757,7 +689,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select Frame</td>
                 
                   <td style="color: green"> PASS</td>
@@ -766,7 +698,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Wait Until Element Is Visible</td>
                 
                   <td style="color: red"> FAIL</td>
@@ -775,7 +707,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -784,7 +716,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación de creación de Trámite con campos requeridos vacíos</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -793,7 +725,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del solicitante, valor vacío</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -802,7 +734,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del Solicitante, valor incorrecto</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -811,7 +743,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Búsqueda Cédula del solicitante, valor correcto</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -820,7 +752,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección Contribuyente</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -829,7 +761,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección dirección</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -838,7 +770,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información opcional en la sección dirección</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -847,7 +779,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Agregar la direccion en la sección dirección</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -856,7 +788,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">And Crear y aceptar el trámite</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -865,7 +797,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">And Aprobar el trámite</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -874,7 +806,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Then Verificar trámite</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -883,7 +815,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Detener Grabacion</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -892,7 +824,7 @@
               </tr>
             
               <tr>
-                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
                 <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Close All Browsers</td>
                 
                   <td style="color: orange"> NOT RUN</td>
@@ -902,7 +834,7 @@
             
           </tbody>
         </table>
-      </div> 
+      </div>
 
       <!-- Keyword Average -->
       <div class="tabcontent" id="keywordMetricsTime">
