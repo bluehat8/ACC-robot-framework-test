@@ -14,7 +14,8 @@ Abrir Navegador
 
 
 Iniciar Grabacion
-    Start Video Recording    alias=None    name=prueba y   fps=none    size_percentage=1    embed=True    embed_width=100px    monitor=1   
+    [Arguments]    ${testname}
+    Start Video Recording    alias=None    name=${testname}   fps=none    size_percentage=1    embed=True    embed_width=100px    monitor=1   
 
 
 Detener Grabacion
@@ -68,8 +69,8 @@ Ingresar al trámite de sujeto pasivo
     Unselect Frame
     Log To Console    New windows is: \ ${tempb}
     Select Frame        name=rise_content
-    Wait Until Element Is Visible    id=dgTypeProceeding_dvClick_85
-    Click Element   id=dgTypeProceeding_dvClick_85
+    Wait Until Element Is Visible    id=dgTypeProceeding_dvClick_22
+    Click Element   id=dgTypeProceeding_dvClick_22
     Sleep     1s
 
 # Empezar a realizar caso de prueba
@@ -460,7 +461,7 @@ ${rutaTelefono}     ArchivosXML/telefonoCorreo.xml
 Autenticar credenciales
     [Documentation]    Se automatizan las pruebas para autenticar el inicio de sesión en ARI CC
     Given Abrir Navegador
-    Iniciar Grabacion
+    Iniciar Grabacion    Login   
     [Tags]    Test Login
     When Iniciar sesion
     Detener Grabacion
@@ -468,15 +469,22 @@ Autenticar credenciales
 
 
 Creacion de sujeto pasivo
+
+    
     [Documentation]       Creación de sujeto pasivo natural
     Go to     https://almacc.tustributos.com/frames.aspx  
-    Iniciar Grabacion
+    Iniciar Grabacion    Crear Sujeto Pasivo
     [Tags]    Sujeto pasivo
     Given Registrar datos del trámite de sujeto pasivo
+    
     And Crear y aceptar el trámite
     And Aprobar el trámite
     Then Verificar trámite
     Detener Grabacion
+    [Teardown]       Run Keyword If Test Failed    Detener Grabacion
+    Run Keyword If Test Failed    Close All Browsers
+
+   
     Close All Browsers
 
 
