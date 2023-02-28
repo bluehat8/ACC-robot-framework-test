@@ -1,0 +1,2712 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RF Metrics</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <!--Py -script-->
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+    <style>
+      body {
+        padding-top: 70px;
+        font-family: -apple-system, sans-serif;
+        background-color: #eeeeee;
+      }
+      
+      .tablecard {
+        background-color: white;
+        font-size: 14px;
+      }
+      
+      th, td {
+        text-align: center;
+      }
+      
+      .dt-buttons {
+        margin-left: 5px;
+      }
+
+      .row {
+        padding: 5px;
+      }
+
+      .rowcard {
+        padding: 10px;
+        border-radius: 15px;
+        background-color: white;
+      }
+      
+      .card-header {
+        font-weight:bold;
+        color:gray;
+        padding-left: 5px;
+      }
+
+      .card-table{
+        width: 100%;
+      }
+
+      .ecard-table {
+        width: 100%;
+      }
+
+      .ecard-table tr{
+        height: 35px;
+        padding-left: 5px;
+      }
+
+      .ecard-table tr:nth-child(even){
+        background-color: #f2f2f2;
+      }
+
+      .card-table tr{
+        height: 25px;
+      }
+
+      .card-table td{
+        width: 50%;
+      }
+
+      .card-table tr:first-child{
+        font-size: 30px;
+      }
+
+      .card-table tr:last-child{
+        font-size: 10px;
+        color: gray;
+      }
+
+      .total {
+        color: brown;
+      }
+
+      .pass {
+        color: green;
+      }
+
+      .fail {
+        color: red;
+      }
+
+      .skip {
+        color: orange;
+      }
+      
+      .loader {
+          position: fixed;
+          left: 0px;
+          top: 0px;
+          width: 100%;
+          height: 100%;
+          z-index: 9999;
+          /* background: url('https://i.ibb.co/cXnKsNR/Cube-1s-200px.gif') 50% 50% no-repeat rgb(249, 249, 249); */
+          background: url('https://i.ibb.co/wR1s7Wq/giphy-1.gif') 50% 50% no-repeat rgb(249, 249, 249);
+          
+      }
+
+      .hide{
+          display:none;  
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="loader"></div>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand">Metrics</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#" class="tablink" id="defaultOpen" onclick="openPage('dashboard', this, '#fc6666')">Dashboard</a></li>
+            <li><a href="#" class="tablink" onclick="openPage('suiteMetrics', this, '#fc6666'); executeDataTable('#sm',6)">Suite</a></li>
+            <li><a href="#" class="tablink" onclick="openPage('testMetrics', this, '#fc6666'); executeDataTable('#tm',3)">Test</a></li>
+            <li class=""><a href="#" class="tablink" onclick="openPage('keywordMetrics', this, '#fc6666'); executeDataTable('#km',3)">Keyword</a></li>
+            <li class=""><a href="#" class="tablink" onclick="openPage('keywordMetricsTime', this, '#fc6666'); executeDataTable('#kmt',1)">KW Times</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a>Execution Time(m): 1.07</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <!-- Dashboard Data -->
+      <div class="tabcontent" id="dashboard">
+        
+        <div class="row">
+
+          <div class="col-md-4">
+            <div class="col-md-12 rowcard">
+              <span class="card-header">Suite Statistics:</span>
+              <div class="col-md-12">
+                  <div id="suitePie"></div>
+              </div>
+              <div class="col-md-12">
+                  <table class="card-table">
+                    <tr>
+                      <td class="total">1</td>
+                      <td class="pass">0</td>
+                    </tr>
+                    <tr>
+                      <td>Total</td>
+                      <td>Pass</td>
+                    </tr>
+                  </table>
+                  <table class="card-table">
+                    <tr>
+                      <td class="fail">1</td>
+                      <td class="skip">0</td>
+                    </tr>
+                    <tr>
+                      <td>Fail</td>
+                      <td>Skip</td>
+                    </tr>
+                  </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="col-md-12 rowcard">
+              <span class="card-header">Test Statistics:</span>
+              <div class="col-md-12">
+                  <div id="testPie"></div>
+              </div>
+              <div class="col-md-12">
+                  <table class="card-table">
+                    <tr>
+                      <td class="total">2</td>
+                      <td class="pass">1</td>
+                    </tr>
+                    <tr>
+                      <td>Total</td>
+                      <td>Pass</td>
+                    </tr>
+                  </table>
+                  <table class="card-table">
+                    <tr>
+                      <td class="fail">1</td>
+                      <td class="skip">0</td>
+                    </tr>
+                    <tr>
+                      <td>Fail</td>
+                      <td>Skip</td>
+                    </tr>
+                  </table>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="col-md-12 rowcard">
+              <span class="card-header">Keyword Statistics:</span>
+              <div class="col-md-12">
+                  <div id="keywordPie"></div>
+              </div>
+              <div class="col-md-12">
+                  <table class="card-table">
+                    <tr>
+                      <td class="total">149</td>
+                      <td class="pass">142</td>
+                    </tr>
+                    <tr>
+                      <td>Total</td>
+                      <td>Pass</td>
+                    </tr>
+                  </table>
+                  <table class="card-table">
+                    <tr>
+                      <td class="fail">2</td>
+                      <td class="skip">0</td>
+                    </tr>
+                    <tr>
+                      <td>Fail</td>
+                      <td>Skip</td>
+                    </tr>
+                  </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row"></div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="col-md-12 rowcard">
+              <span class="card-header">Top 5 Common Failures:</span>
+              <table class="ecard-table">
+                <tr>
+                  <th>Error Message</th>
+                  <th>Occurence</th>
+                </tr>
+                
+                  
+                
+                  
+                    <tr>
+                      <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"><p>Element 'id=rbStatus_0' not visible after 5 seconds.</p></td>
+                      <td>1</td>
+                    </tr>
+                  
+                
+              </table>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-12 rowcard">
+              <span class="card-header">Execution Duration(m):</span>
+              <table class="ecard-table">
+                <tr>
+                  <th>Type</th>
+                  <th>Min</th>
+                  <th>Max</th>
+                  <th>Avg</th>
+                </tr>
+                <tr>
+                  <td style="text-align: left;">Suite</td>
+                  <td>1.07</td>
+                  <td>1.07</td>
+                  <td>1.07</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left;">Test</td>
+                  <td>0.21</td>
+                  <td>0.86</td>
+                  <td>0.53</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row"></div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="col-md-12 rowcard">
+              <span class="card-header">Top 10 Suite Failures:</span>
+              <div class="col-md-12">
+                <div id="suiteFailureLineID"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row"></div>
+        </div>
+      </div>
+
+      <!-- Suite Data -->
+      <div class="tabcontent" id="suiteMetrics">
+        <table id="sm" class="display tablecard" style="width:100%">
+          <thead>
+              <tr>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th class="hide">Documentation</th>
+                  <th>Total</th>
+                  <th>Pass</th>
+                  <th>Fail</th>
+                  <th>Skip</th>
+                  <th>Time (s)</th>
+              </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td data-toggle="tooltip" title="Testcase" onclick="openInNewTab('log.html#s1','#s1')" style="word-wrap: break-word;max-width: 250px; white-space: normal; cursor: pointer; color:blue; text-align: left;">Testcase</td>
+                
+                  <td style="color: red"> FAIL</td>
+                
+                <td class="hide"></td>
+                <td>2</td>
+                <td style="color: green">1</td>
+                <td style="color: red">1</td>
+                <td style="color: orange">0</td>
+                <td>64.41</td>
+              </tr>
+            
+          </tbody>
+        </table> 
+      </div>
+
+      <!-- Test Case Data -->
+      <div class="tabcontent" id="testMetrics">
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-bottom:20px;">Eliminar vídeos de test aprobados</button>
+        <!--Ventana modal para eliminar videos-->
+
+    
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Eliminar vídeos</h4>
+              </div>
+              <div class="modal-body">
+                ¿Desea eliminar los vídeos de los test aprobados?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary"  id="eliminar-videos-btn">Sí</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+                    <!--Fin de ventana modal para eliminar videos-->
+
+      
+
+        <table id="tm" class="display tablecard" style="width:100%">
+          <thead>
+              <tr>
+                <th>Suite Name</th>
+                <th>Test Name</th>
+                <th>Status</th>
+                <th>Documentation</th>
+                <th>Time (s)</th>
+                <th>Message</th>
+                <th>Tags</th>
+              </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Testcase</td>
+                <td data-toggle="tooltip" title="Autenticar credenciales" onclick="openInNewTab('log.html#s1-t1','#s1-t1')" style="word-wrap: break-word;max-width: 250px; white-space: normal; cursor: pointer; color:blue; text-align: left;">Autenticar credenciales</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td><p>Se automatizan las pruebas para autenticar el inicio de sesión en ARI CC</p></td>
+                <td>12.31</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">[Test Login]</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Testcase</td>
+                <td data-toggle="tooltip" title="Creacion de sujeto pasivo" onclick="openInNewTab('log.html#s1-t2','#s1-t2')" style="word-wrap: break-word;max-width: 250px; white-space: normal; cursor: pointer; color:blue; text-align: left;">Creacion de sujeto pasivo</td>
+                
+                  <td style="color: red"> FAIL</td>
+                
+                <td><p>Creación de sujeto pasivo natural</p></td>
+                <td>51.76</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"><p>Element 'id=rbStatus_0' not visible after 5 seconds.</p></td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">[Sujeto pasivo]</td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+
+        <!--Script para eliminar videos-->
+        <script>
+          
+          document.getElementById('eliminar-videos-btn').addEventListener('click', function() {
+           
+              if (confirm('¿Está seguro de que desea eliminar todos los vídeos en la ruta especificada?')) {
+                // Obtener los nombres de los tests
+                const testNames = document.querySelectorAll("#tm tbody tr td:nth-child(2)");
+                testNames.forEach(testName => alert(testName.textContent));
+                //alert('Los vídeos han sido eliminados correctamente');
+              }
+
+
+          });
+
+         
+        </script>
+          <!--End script para eliminar videos-->
+  
+   <py-script>
+    print('Hello world!')
+   </py-script>
+  
+
+
+   
+
+
+      <!--<script>
+      var myModal = document.getElementById('myModal')
+      var myInput = document.getElementById('myInput')
+
+      myModal.addEventListener('shown.bs.modal', function () {
+      myInput.focus()
+      })
+      </script> -->
+
+      <!-- Keyword Data -->
+       <div class="tabcontent" id="keywordMetrics">
+        <table id="km" class="display tablecard" style="width:100%">
+          <thead>
+              <tr>
+                  <th>Test Name</th>
+                  <th>Keyword Name</th>
+                  <th>Status</th>
+                  <th>Time (s)</th>
+              </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Autenticar credenciales</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Abrir Navegador</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>3.97</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Abrir Navegador</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Open Browser</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>3.82</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Abrir Navegador</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Execute Javascript</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Abrir Navegador</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Maximize Browser Window</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.13</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Autenticar credenciales</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Iniciar Grabacion</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>2.19</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Iniciar Grabacion</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">ScreenCapLibrary.Start Video Recording</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>2.19</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Autenticar credenciales</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">When Iniciar sesion</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>6.05</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">When Iniciar sesion</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my username</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.09</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my username</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Leer username</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Leer username</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my username</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.08</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">When Iniciar sesion</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my password</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.1</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my password</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Leer password</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Leer password</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my password</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.1</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">When Iniciar sesion</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Login</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>2.75</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Login</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Button</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.75</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">When Iniciar sesion</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Login Succesful</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.09</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Login Succesful</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Page Should Contain</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.09</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Autenticar credenciales</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Detener Grabacion</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.1</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Detener Grabacion</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">ScreenCapLibrary.Stop Video Recording</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.1</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Go To</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.73</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Iniciar Grabacion</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>2.19</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Iniciar Grabacion</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">ScreenCapLibrary.Start Video Recording</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>2.19</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>34.15</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ir a trámites predeterminados</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.24</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ir a trámites predeterminados</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Get Title</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ir a trámites predeterminados</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select Frame</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.03</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ir a trámites predeterminados</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Wait Until Element Is Visible</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.04</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ir a trámites predeterminados</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.17</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>4.83</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Get Title</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Unselect Frame</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select Frame</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.03</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Wait Until Element Is Visible</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.03</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>3.76</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación de creación de Trámite con campos requeridos vacíos</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>6.13</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación de creación de Trámite con campos requeridos vacíos</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Unselect Frame</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación de creación de Trámite con campos requeridos vacíos</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select Frame</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación de creación de Trámite con campos requeridos vacíos</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.08</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación de creación de Trámite con campos requeridos vacíos</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Handle Alert</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación de creación de Trámite con campos requeridos vacíos</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Alert Should Be Present</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del solicitante, valor vacío</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>2.12</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del solicitante, valor vacío</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.08</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del solicitante, valor vacío</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Wait Until Element Is Visible</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.02</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del solicitante, valor vacío</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Element Should Contain</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.02</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del Solicitante, valor incorrecto</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>2.71</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del Solicitante, valor incorrecto</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del Solicitante, valor incorrecto</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.09</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del Solicitante, valor incorrecto</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del Solicitante, valor incorrecto</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Wait Until Element Contains</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.48</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Búsqueda Cédula del solicitante, valor correcto</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>3.24</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Búsqueda Cédula del solicitante, valor correcto</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.06</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Búsqueda Cédula del solicitante, valor correcto</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Búsqueda Cédula del solicitante, valor correcto</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.09</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Búsqueda Cédula del solicitante, valor correcto</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección Contribuyente</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>4.36</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección Contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de contribuyente</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.13</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.06</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select From List By Label</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección Contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Primer nombre contribuyente</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.09</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Primer nombre contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Primer nombre contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.09</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección Contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de docuemnto de identidad</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.14</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de docuemnto de identidad</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de docuemnto de identidad</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de docuemnto de identidad</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select From List By Label</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.06</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección Contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Día de nacimiento del contribuyente</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.17</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Día de nacimiento del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.08</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Día de nacimiento del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Día de nacimiento del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select From List By Label</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.08</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección Contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Mes de nacimiento del contribuyente</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.16</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Mes de nacimiento del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.09</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Mes de nacimiento del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Mes de nacimiento del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select From List By Label</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección Contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Año de nacimiento del contribuyente</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.18</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Año de nacimiento del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.11</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Año de nacimiento del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Año de nacimiento del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select From List By Label</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección Contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Primer apellido del contribuyente</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.14</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Primer apellido del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.08</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Primer apellido del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Primer apellido del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.06</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección Contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Número de identificacion del contribuyente</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.17</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Número de identificacion del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Número de identificacion del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Número de identificacion del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.09</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección Contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Género del contribuyente</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.17</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Género del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Género del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.09</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Género del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select From List By Label</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Género del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Wait Until Element Contains</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección dirección</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>2.63</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de dirección del contribuyente</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.15</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de dirección del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de dirección del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.09</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de dirección del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select From List By Label</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Edificio / casa del contribuyente</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.13</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Edificio / casa del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Edificio / casa del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.08</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Edificio / casa del contribuyente</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.05</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Distrito de la dirección</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.15</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Distrito de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Distrito de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.08</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Distrito de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select From List By Label</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Barrio de la dirección</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.19</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Barrio de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Barrio de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.1</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Barrio de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select From List By Label</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.08</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información opcional en la sección dirección</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>2.81</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información opcional en la sección dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Calle a la derecha del inmueble</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.14</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Calle a la derecha del inmueble</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Calle a la derecha del inmueble</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.08</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Calle a la derecha del inmueble</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información opcional en la sección dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Calle a la izquierda del inmueble</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.2</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Calle a la izquierda del inmueble</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Calle a la izquierda del inmueble</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Calle a la izquierda del inmueble</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.12</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información opcional en la sección dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Apartamento de la dirección</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.14</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Apartamento de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Apartamento de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.08</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Apartamento de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.06</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información opcional en la sección dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Piso de la dirección</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.13</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Piso de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Piso de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Piso de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.06</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información opcional en la sección dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Comentario de la dirección</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.19</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Comentario de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Comentario de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.08</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Comentario de la dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.11</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Agregar la direccion en la sección dirección</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>2.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Agregar la direccion en la sección dirección</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.07</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">And Crear y aceptar el trámite</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>2.11</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">And Crear y aceptar el trámite</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Creacion del trámite</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.09</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Creacion del trámite</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Wait Until Element Is Visible</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.03</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Creacion del trámite</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.06</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">And Crear y aceptar el trámite</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Aceptar creación del trámite</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>1.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Aceptar creación del trámite</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Handle Alert</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.01</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">And Aprobar el trámite</td>
+                
+                  <td style="color: red"> FAIL</td>
+                
+                <td>7.29</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">And Aprobar el trámite</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Wait Until Element Is Visible</td>
+                
+                  <td style="color: red"> FAIL</td>
+                
+                <td>5.29</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">And Aprobar el trámite</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: orange"> NOT RUN</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">And Aprobar el trámite</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                
+                  <td style="color: orange"> NOT RUN</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Then Verificar trámite</td>
+                
+                  <td style="color: orange"> NOT RUN</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Detener Grabacion</td>
+                
+                  <td style="color: orange"> NOT RUN</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Creacion de sujeto pasivo</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Close All Browsers</td>
+                
+                  <td style="color: orange"> NOT RUN</td>
+                
+                <td>0.0</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">BuiltIn.Run Keywords</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Detener Grabacion</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.06</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Detener Grabacion</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">ScreenCapLibrary.Stop Video Recording</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>0.06</td>
+              </tr>
+            
+              <tr>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">BuiltIn.Run Keywords</td>
+                <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Close All Browsers</td>
+                
+                  <td style="color: green"> PASS</td>
+                
+                <td>4.22</td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Keyword Average -->
+      <div class="tabcontent" id="keywordMetricsTime">
+        <table id="kmt" class="display tablecard" style="width:100%">
+          <thead>
+              <tr>
+                  <!--<th>Test Name</th>-->
+                  <th>Keyword Name</th>
+                  <th>Times</th>
+                  <th>Min Duration(s)</th>
+                  <th>Max Duration(s)</th>
+                  <th>Average Duration(s)</th>
+              </tr>
+          </thead>
+          <tbody>
+            
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Aceptar creación del trámite</td>
+                  <td>1</td>
+                  <td>1.01</td>
+                  <td>1.01</td>
+                  <td>1.01</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Agregar la direccion en la sección dirección</td>
+                  <td>1</td>
+                  <td>2.07</td>
+                  <td>2.07</td>
+                  <td>2.07</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Búsqueda Cédula del solicitante, valor correcto</td>
+                  <td>1</td>
+                  <td>3.24</td>
+                  <td>3.24</td>
+                  <td>3.24</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Creacion del trámite</td>
+                  <td>1</td>
+                  <td>1.09</td>
+                  <td>1.09</td>
+                  <td>1.09</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ingresar al trámite de sujeto pasivo</td>
+                  <td>1</td>
+                  <td>4.83</td>
+                  <td>4.83</td>
+                  <td>4.83</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Ir a trámites predeterminados</td>
+                  <td>1</td>
+                  <td>1.24</td>
+                  <td>1.24</td>
+                  <td>1.24</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información opcional en la sección dirección</td>
+                  <td>1</td>
+                  <td>2.81</td>
+                  <td>2.81</td>
+                  <td>2.81</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección Contribuyente</td>
+                  <td>1</td>
+                  <td>4.36</td>
+                  <td>4.36</td>
+                  <td>4.36</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Registro de información requerida en la sección dirección</td>
+                  <td>1</td>
+                  <td>2.63</td>
+                  <td>2.63</td>
+                  <td>2.63</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del Solicitante, valor incorrecto</td>
+                  <td>1</td>
+                  <td>2.71</td>
+                  <td>2.71</td>
+                  <td>2.71</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación búsqueda de Cédula del solicitante, valor vacío</td>
+                  <td>1</td>
+                  <td>2.12</td>
+                  <td>2.12</td>
+                  <td>2.12</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">AND Validación de creación de Trámite con campos requeridos vacíos</td>
+                  <td>1</td>
+                  <td>6.13</td>
+                  <td>6.13</td>
+                  <td>6.13</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">And Aprobar el trámite</td>
+                  <td>1</td>
+                  <td>7.29</td>
+                  <td>7.29</td>
+                  <td>7.29</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">And Crear y aceptar el trámite</td>
+                  <td>1</td>
+                  <td>2.11</td>
+                  <td>2.11</td>
+                  <td>2.11</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Apartamento de la dirección</td>
+                  <td>1</td>
+                  <td>0.14</td>
+                  <td>0.14</td>
+                  <td>0.14</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Año de nacimiento del contribuyente</td>
+                  <td>1</td>
+                  <td>0.18</td>
+                  <td>0.18</td>
+                  <td>0.18</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Barrio de la dirección</td>
+                  <td>1</td>
+                  <td>1.19</td>
+                  <td>1.19</td>
+                  <td>1.19</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Calle a la derecha del inmueble</td>
+                  <td>1</td>
+                  <td>0.14</td>
+                  <td>0.14</td>
+                  <td>0.14</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Calle a la izquierda del inmueble</td>
+                  <td>1</td>
+                  <td>0.2</td>
+                  <td>0.2</td>
+                  <td>0.2</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Comentario de la dirección</td>
+                  <td>1</td>
+                  <td>1.19</td>
+                  <td>1.19</td>
+                  <td>1.19</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Detener Grabacion</td>
+                  <td>3</td>
+                  <td>0.0</td>
+                  <td>0.1</td>
+                  <td>0.06</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Distrito de la dirección</td>
+                  <td>1</td>
+                  <td>1.15</td>
+                  <td>1.15</td>
+                  <td>1.15</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Día de nacimiento del contribuyente</td>
+                  <td>1</td>
+                  <td>0.17</td>
+                  <td>0.17</td>
+                  <td>0.17</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Edificio / casa del contribuyente</td>
+                  <td>1</td>
+                  <td>0.13</td>
+                  <td>0.13</td>
+                  <td>0.13</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Abrir Navegador</td>
+                  <td>1</td>
+                  <td>3.97</td>
+                  <td>3.97</td>
+                  <td>3.97</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Given Registrar datos del trámite de sujeto pasivo</td>
+                  <td>1</td>
+                  <td>34.15</td>
+                  <td>34.15</td>
+                  <td>34.15</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Género del contribuyente</td>
+                  <td>1</td>
+                  <td>0.17</td>
+                  <td>0.17</td>
+                  <td>0.17</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Iniciar Grabacion</td>
+                  <td>2</td>
+                  <td>2.19</td>
+                  <td>2.19</td>
+                  <td>2.19</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Leer password</td>
+                  <td>1</td>
+                  <td>0.0</td>
+                  <td>0.0</td>
+                  <td>0.0</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Leer username</td>
+                  <td>1</td>
+                  <td>0.01</td>
+                  <td>0.01</td>
+                  <td>0.01</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my password</td>
+                  <td>1</td>
+                  <td>1.1</td>
+                  <td>1.1</td>
+                  <td>1.1</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Log my username</td>
+                  <td>1</td>
+                  <td>1.09</td>
+                  <td>1.09</td>
+                  <td>1.09</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Login</td>
+                  <td>1</td>
+                  <td>2.75</td>
+                  <td>2.75</td>
+                  <td>2.75</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Login Succesful</td>
+                  <td>1</td>
+                  <td>1.09</td>
+                  <td>1.09</td>
+                  <td>1.09</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Mes de nacimiento del contribuyente</td>
+                  <td>1</td>
+                  <td>0.16</td>
+                  <td>0.16</td>
+                  <td>0.16</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Número de identificacion del contribuyente</td>
+                  <td>1</td>
+                  <td>1.17</td>
+                  <td>1.17</td>
+                  <td>1.17</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Piso de la dirección</td>
+                  <td>1</td>
+                  <td>0.13</td>
+                  <td>0.13</td>
+                  <td>0.13</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Primer apellido del contribuyente</td>
+                  <td>1</td>
+                  <td>0.14</td>
+                  <td>0.14</td>
+                  <td>0.14</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Primer nombre contribuyente</td>
+                  <td>1</td>
+                  <td>0.09</td>
+                  <td>0.09</td>
+                  <td>0.09</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">ScreenCapLibrary.Start Video Recording</td>
+                  <td>2</td>
+                  <td>2.19</td>
+                  <td>2.19</td>
+                  <td>2.19</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">ScreenCapLibrary.Stop Video Recording</td>
+                  <td>2</td>
+                  <td>0.06</td>
+                  <td>0.1</td>
+                  <td>0.08</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Alert Should Be Present</td>
+                  <td>1</td>
+                  <td>0.01</td>
+                  <td>0.01</td>
+                  <td>0.01</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Button</td>
+                  <td>1</td>
+                  <td>1.75</td>
+                  <td>1.75</td>
+                  <td>1.75</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Click Element</td>
+                  <td>29</td>
+                  <td>0.0</td>
+                  <td>3.76</td>
+                  <td>0.2</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Close All Browsers</td>
+                  <td>2</td>
+                  <td>0.0</td>
+                  <td>4.22</td>
+                  <td>2.11</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Element Should Contain</td>
+                  <td>1</td>
+                  <td>0.02</td>
+                  <td>0.02</td>
+                  <td>0.02</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Execute Javascript</td>
+                  <td>1</td>
+                  <td>0.01</td>
+                  <td>0.01</td>
+                  <td>0.01</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Get Title</td>
+                  <td>2</td>
+                  <td>0.0</td>
+                  <td>0.01</td>
+                  <td>0.0</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Go To</td>
+                  <td>1</td>
+                  <td>1.73</td>
+                  <td>1.73</td>
+                  <td>1.73</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Handle Alert</td>
+                  <td>2</td>
+                  <td>0.01</td>
+                  <td>0.01</td>
+                  <td>0.01</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Input Text</td>
+                  <td>13</td>
+                  <td>0.05</td>
+                  <td>0.12</td>
+                  <td>0.08</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Maximize Browser Window</td>
+                  <td>1</td>
+                  <td>0.13</td>
+                  <td>0.13</td>
+                  <td>0.13</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Open Browser</td>
+                  <td>1</td>
+                  <td>3.82</td>
+                  <td>3.82</td>
+                  <td>3.82</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Page Should Contain</td>
+                  <td>1</td>
+                  <td>0.09</td>
+                  <td>0.09</td>
+                  <td>0.09</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select Frame</td>
+                  <td>3</td>
+                  <td>0.01</td>
+                  <td>0.03</td>
+                  <td>0.02</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Select From List By Label</td>
+                  <td>9</td>
+                  <td>0.06</td>
+                  <td>0.08</td>
+                  <td>0.07</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Unselect Frame</td>
+                  <td>2</td>
+                  <td>0.0</td>
+                  <td>0.01</td>
+                  <td>0.0</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Wait Until Element Contains</td>
+                  <td>2</td>
+                  <td>0.01</td>
+                  <td>0.48</td>
+                  <td>0.25</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Selenium2Library.Wait Until Element Is Visible</td>
+                  <td>5</td>
+                  <td>0.02</td>
+                  <td>5.29</td>
+                  <td>1.08</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Then Verificar trámite</td>
+                  <td>1</td>
+                  <td>0.0</td>
+                  <td>0.0</td>
+                  <td>0.0</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de contribuyente</td>
+                  <td>1</td>
+                  <td>1.13</td>
+                  <td>1.13</td>
+                  <td>1.13</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de dirección del contribuyente</td>
+                  <td>1</td>
+                  <td>0.15</td>
+                  <td>0.15</td>
+                  <td>0.15</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">Tipo de docuemnto de identidad</td>
+                  <td>1</td>
+                  <td>0.14</td>
+                  <td>0.14</td>
+                  <td>0.14</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">When Iniciar sesion</td>
+                  <td>1</td>
+                  <td>6.05</td>
+                  <td>6.05</td>
+                  <td>6.05</td>
+
+                </tr>
+              
+                <tr>
+                  <!--<td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;"></td>--> 
+                  <td style="word-wrap: break-word;max-width: 250px; white-space: normal; text-align: left;">xmlReader.Leer Xml</td>
+                  <td>21</td>
+                  <td>0.0</td>
+                  <td>0.01</td>
+                  <td>0.0</td>
+
+                </tr>
+              
+            
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+      function openPage(pageName,elmnt,color) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablink");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].style.color = "";
+            }
+            document.getElementById(pageName).style.display = "block";
+            elmnt.style.color = color;
+    
+        }
+        document.getElementById("defaultOpen").click();
+     </script>
+     <script>
+        document.getElementById("defaultOpen").click();
+     </script>
+
+    <script>
+      function executeDataTable(tabname, sortCol) {
+        var fileTitle;
+        switch(tabname) {
+          case "#sm":
+            fileTitle = "SuiteMetrics";
+            break;
+          case "#tm":
+            fileTitle = "TestMetrics";
+            break;
+          case "#km":
+            fileTitle = "KeywordMetrics";
+            break;
+          default:
+            fileTitle = "Metrics";
+        }
+        $(tabname).DataTable(
+          {
+            retrieve: true,
+            "order": [[ Number(sortCol), "desc" ]],
+            dom: 'l<".margin" B>frtip',
+            buttons: [
+              {
+                extend:'copyHtml5',
+                text: '<i class="fa fa-files-o"></i>',
+                filename: function() {
+                  return fileTitle + '-' + new Date().toLocaleString();
+                },
+                titleAttr: 'Copy',
+                exportOptions: {
+                  columns: ':visible'
+                }
+              },
+              {
+                extend:'csvHtml5',
+                text:'<i class="fa fa-file-text-o"></i>',
+                titleAttr:'CSV',
+                filename: function() {
+                  return fileTitle + '-' + new Date().toLocaleString();
+                },
+                exportOptions: {
+                  columns: ':visible'
+                }
+              },
+              {
+                extend: 'excelHtml5',
+                text:'<i class="fa fa-file-excel-o"></i>',
+                titleAttr: 'Excel',
+                filename: function() {
+                  return fileTitle + '-' + new Date().toLocaleString();
+                },
+                exportOptions: {
+                  columns: ':visible'
+                }
+              },
+              {
+                extend: 'print',
+                text: '<i class="fa fa-print"></i>',
+                titleAttr: 'Print',
+                exportOptions: {
+                  columns: ':visible',
+                  alignment: 'left',
+                }
+              },
+              {
+                extend: 'colvis',
+                collectionLayout: 'fixed two-column',
+                text: '<i class="fa fa-low-vision"></i>',
+                titleAttr: 'Hide Column',
+                exportOptions: {
+                  columns:':visible'
+                },
+                postfixButtons: [ 'colvisRestore' ]
+              }
+              
+              ,
+            ],
+            columnDefs: [ {
+              visible: false,
+            } ]
+          }
+        );
+      }
+    </script>
+  </body>
+  <script>
+    window.onload = function(){
+      pieChart('#suitePie', "0", "1", "0");
+      pieChart('#testPie', "1", "1", "0");
+      pieChart('#keywordPie', "142", "2", "0");
+    };
+  </script>
+  <script>
+    function pieChart(chartID, passed, failed, skipped) {
+      var options = {
+        series: [parseInt(passed), parseInt(failed), parseInt(skipped)],
+        chart: {
+          type: 'donut',
+          width: 270,
+        },
+        labels: ["Pass", "Fail", "Skip"],
+        legend: {
+          show: false,
+        },
+        colors: ['#2ecc71', '#fc6666', '#ffa500'],
+      };
+
+      var chart = new ApexCharts(document.querySelector(chartID), options);
+      chart.render();
+    }
+  </script>
+  <script>
+    var passArray = [];
+    var failArray = [];
+    var catgArray = [];
+
+    
+      
+        catgArray.push("Testcase");
+        passArray.push(50.0);
+        failArray.push(1);
+      
+    
+    
+    var options = {
+        series: [{
+          name: 'Fail Percentage',
+          data: passArray,
+          type: "line"
+        }, {
+          name: 'Fail',
+          data: failArray,
+          type: "column"
+        }],
+        chart: {
+          type: 'line',
+          height: 350,
+          // stacked: true,
+        },
+        
+        plotOptions: {
+        bar: {
+          dataLabels: {
+          position: 'center',
+          hideOverflowingLabels: true
+        }
+        },
+      },
+      colors: ['#2ecc71', '#fc6666'],
+      xaxis: {
+          categories: catgArray,
+          tickPlacement: 'off',
+          labels: {
+            show: false,
+            trim: true
+          }
+      },
+      yaxis: [{
+        title: {
+          text: 'Suite Fail Percentage',
+        },
+      
+      }, {
+        opposite: true,
+        title: {
+          text: 'Suite Fail Count'
+        }
+      }],
+      fill: {
+          opacity: 0.9
+      },
+      tooltip: {
+          y: {
+              formatter: function (val) {
+              return val
+              }
+          },
+          x: {
+              show: true
+          }
+      }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#suiteFailureLineID"), options);
+    chart.render();
+  
+  </script>
+  <script>
+    function openInNewTab(url,element_id) {
+      var element_id= element_id;
+      var win = window.open(url, '_blank');
+      win.focus();
+      $('body').scrollTo(element_id);
+    }
+  </script>
+  <script>
+    $(window).on('load',function(){$('.loader').fadeOut();});
+  </script>
+</html>

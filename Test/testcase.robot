@@ -461,7 +461,7 @@ ${rutaTelefono}     ArchivosXML/telefonoCorreo.xml
 Autenticar credenciales
     [Documentation]    Se automatizan las pruebas para autenticar el inicio de sesión en ARI CC
     Given Abrir Navegador
-    Iniciar Grabacion    Login   
+    Iniciar Grabacion    Autenticar credenciales   
     [Tags]    Test Login
     When Iniciar sesion
     Detener Grabacion
@@ -473,7 +473,7 @@ Creacion de sujeto pasivo
     
     [Documentation]       Creación de sujeto pasivo natural
     Go to     https://almacc.tustributos.com/frames.aspx  
-    Iniciar Grabacion    Crear Sujeto Pasivo
+    Iniciar Grabacion    Creación de sujeto pasivo
     [Tags]    Sujeto pasivo
     Given Registrar datos del trámite de sujeto pasivo
     
@@ -481,8 +481,9 @@ Creacion de sujeto pasivo
     And Aprobar el trámite
     Then Verificar trámite
     Detener Grabacion
-    [Teardown]       Run Keyword If Test Failed    Detener Grabacion
-    Run Keyword If Test Failed    Close All Browsers
+    [Teardown]       Run Keywords    
+    ...        Detener Grabacion     
+    ...        Close All Browsers        
 
    
     Close All Browsers
