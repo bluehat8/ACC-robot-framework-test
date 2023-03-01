@@ -15,3 +15,4 @@ def ingresarDatosDeSalidaXML(ruta, findall, atributo, valor):
         hijo.find(atributo).text =valor
 
     arbol.write(ruta,encoding="UTF-8",xml_declaration=True)
+    

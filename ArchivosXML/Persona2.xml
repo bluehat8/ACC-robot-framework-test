@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ArrayOfPerson><Person><name>John</name>
+<age>30</age>
+</Person>
+<Person><name>Jane</name>
+<age>25</age>
+</Person>
+</ArrayOfPerson>
