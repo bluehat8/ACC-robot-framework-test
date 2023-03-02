@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 import inspect
 
 
-class comentarioTramite:
+class ComentarioTramite:
     def __init__(self, comentario):
         self.comentario = comentario
                 

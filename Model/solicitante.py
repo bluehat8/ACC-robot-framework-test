@@ -3,7 +3,7 @@ import inspect
 
 
 class Solicitante:
-    def __init__(self, cedula, telefono, cargo, correo):
+    def __init__(self, cedula, telefono=0, cargo=0, correo=0):
 
         self.cedula = cedula
         self.telefono = telefono

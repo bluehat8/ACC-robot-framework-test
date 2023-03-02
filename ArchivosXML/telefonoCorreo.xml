@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- <Teléfono y correo del contribuyente-->
-<users>
-  <user>
+<ArrayOfTelefonoCorreo>
+  <TelefonoCorreo>
     <tipoTelefono>Celular</tipoTelefono>
     <numTelefono>87654321</numTelefono>
     <correo>pedrosipriano@gmail.com</correo>
-    </user>
-    <user>
-      <tipoTelefono>Celular</tipoTelefono>
+  </TelefonoCorreo>
+  <TelefonoCorreo>
+    <tipoTelefono>Celular</tipoTelefono>
       <numTelefono>88528932</numTelefono>
       <correo>jyanzm@gmail.com</correo>
-      </user>
-</users>
+  </TelefonoCorreo>
+</ArrayOfTelefonoCorreo>

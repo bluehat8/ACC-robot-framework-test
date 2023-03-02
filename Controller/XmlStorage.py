@@ -14,6 +14,12 @@ def to_xml(obj):
         root.append(child)
     return ET.tostring(root, encoding='unicode')
 
+def xml_to_str(path):
+    arbol=ET.parse(path)
+    root = arbol.getroot()
+
+    return ET.tostring(root, encoding='unicode', method='xml')
+
 
 def list_to_xml(obj_list):
     root = ET.Element('ArrayOf{}'.format(obj_list[0].__class__.__name__))
@@ -28,18 +34,6 @@ def list_to_xml(obj_list):
         obj_xml.tail="\n"
     return ET.tostring(root, encoding='unicode', xml_declaration=True)   
 
-
-# def from_xml_4(xml_str: str, class_type:Type, attributes):
-#     root = ET.fromstring(xml_str)
-#     object_list = []
-#     for obj in root.findall(class_type.__name__):
-#         values = []
-#         for attribute in attributes:
-#             value = obj.find(attribute).text
-#             values.append(value)
-#         object_instance = class_type(*values)
-#         object_list.append(object_instance)
-#     return object_list
 
 def from_xml_5(xml_str: str, class_type: Type, attributes, include_output: bool = False):
     root = ET.fromstring(xml_str)
@@ -80,7 +74,19 @@ def create_xml(xml_str, path):
 #         return []
     
 
-
 # def get_actor_data(xml_doc, output=False):
 #     return from_xml(xml_doc, "ActorData", "Output/", output)
+
+
+# def from_xml_4(xml_str: str, class_type:Type, attributes):
+#     root = ET.fromstring(xml_str)
+#     object_list = []
+#     for obj in root.findall(class_type.__name__):
+#         values = []
+#         for attribute in attributes:
+#             value = obj.find(attribute).text
+#             values.append(value)
+#         object_instance = class_type(*values)
+#         object_list.append(object_instance)
+#     return object_list
 

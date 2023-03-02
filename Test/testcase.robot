@@ -3,6 +3,13 @@ Library    Selenium2Library
 Library    ScreenCapLibrary
 #Library    JIRALibrary
 Library    ../xmlReader.py
+Library    ../Controller/UserController.py
+Library    ../Controller/ComentController.py
+Library    ../Controller/ApplicantsController.py
+Library    ../Controller/TaxpayerController.py
+Library    ../Controller/DirController.py
+Library    ../Controller/GeneralitiesController.py
+Library    ../Controller/MailController.py
 
 *** Keywords ***
 
@@ -24,11 +31,13 @@ Detener Grabacion
 # Pasos inciales para login
 
 Leer username
-    ${txtUser}=    Leer Xml    ${rutaInicioSesion}    username
+    ${position}=    Convert To Integer    0
+    ${txtUser}=    Get User Attribute    username       ${position}
     [return]    ${txtUser}
 
 Leer password
-    ${txtPass}=    Leer Xml    ${rutaInicioSesion}    password
+    ${position}=    Convert To Integer    0
+    ${txtPass}=    Get User Attribute    password    ${position}
     [return]    ${txtPass}
 
 Log my username
@@ -92,7 +101,7 @@ Validación de creación de Trámite con campos requeridos vacíos
 Digitar el comentario del trámite
     
     Click Element    name=textProceedingComments
-    ${ComentarioTramite}=    Leer Xml    ${rutaComentarioTramite}    comentario    
+    ${ComentarioTramite}=    ComentController.Get Attribute      comentario    0   
     Input Text    name=textProceedingComments    ${ComentarioTramite}
     Sleep    1s
     
@@ -117,7 +126,7 @@ Validación búsqueda de Cédula del Solicitante, valor incorrecto
 Búsqueda Cédula del solicitante, valor correcto
 
     Click Element    name=textApplicantIdCard
-    ${CedulaSoli}=    Leer Xml    ${rutaSolicitante}    cedula
+    ${CedulaSoli}=    ApplicantsController.Get Attribute     cedula    0
     Input Text       name=textApplicantIdCard    ${CedulaSoli}
     Sleep    1s
     Click Element    name=linkShow
@@ -126,19 +135,19 @@ Búsqueda Cédula del solicitante, valor correcto
 Teléfono del solicitante 
 
     Click Element    name=textApplicantPhone
-    ${TelefonoSoli}=    leer Xml    ${rutaSolicitante}    telefono
+    ${TelefonoSoli}=   ApplicantsController.Get Attribute    telefono    0
     Input Text       name=textApplicantPhone    ${TelefonoSoli}
 
 Cargo del solicitante
 
     Click Element    name=textApplicantPosition
-    ${CargoSoli}=    leer Xml    ${rutaSolicitante}    cargo
+    ${CargoSoli}=   ApplicantsController.Get Attribute    cargo    0
     Input Text       name=textApplicantPosition    ${CargoSoli}
 
 Correo del solicitante
 
     Click Element    name=textApplicantEmail
-    ${CorreoSoli}=    leer Xml    ${rutaSolicitante}    correo    
+    ${CorreoSoli}=    ApplicantsController.Get Attribute    correo    0    
     Input Text       name=textApplicantEmail    ${CorreoSoli}
     
 
@@ -153,55 +162,55 @@ Registro de información faltante en la sección Solicitante
 Tipo de contribuyente
 
     Click Element    name=clientControl$ddTypeActor
-    ${TipoPersona}=    leer Xml    ${rutaContribuyente}    tipoPersona
+    ${TipoPersona}=    TaxpayerController.Get Attribute    tipoPersona    0
     Select From List By Label   name=clientControl$ddTypeActor     ${TipoPersona}
     Sleep    1s
     
 Primer nombre contribuyente    
 
-    ${primerNombre}=    Leer Xml    ${rutaContribuyente}   primerNom 
+    ${primerNombre}=    TaxpayerController.Get Attribute   primerNom     0
     Input Text    name=clientControl$textActorFFNameTradeName    ${primerNombre} 
     
 Tipo de docuemnto de identidad
 
     Click Element    name=clientControl$ddTypeIdCard
-    ${tipoDocumento}=    Leer Xml    ${rutaContribuyente}    documentoID    
+    ${tipoDocumento}=    TaxpayerController.Get Attribute    documentoID    0    
     Select From List By Label  name=clientControl$ddTypeIdCard    ${tipoDocumento}
 
 Día de nacimiento del contribuyente
 
     Click Element    name=clientControl$ddlDayActorBirthday       
-    ${diaNaci}=    leer Xml    ${rutaContribuyente}    diaNaci
+    ${diaNaci}=    TaxpayerController.Get Attribute    diaNaci    0
     Select From List By Label  name=clientControl$ddlDayActorBirthday    ${diaNaci}
 
 Mes de nacimiento del contribuyente
 
     Click Element    name=clientControl$ddlMonthActorBirthday
-    ${mesNaci}=    leer Xml    ${rutaContribuyente}    mesNaci
+    ${mesNaci}=    TaxpayerController.Get Attribute    mesNaci    0
     Select From List By Label  name=clientControl$ddlMonthActorBirthday    ${mesNaci}
 
 Año de nacimiento del contribuyente
 
     Click Element    name=clientControl$ddlYearActorBirthday   
-    ${añoNaci}=    Leer Xml    ${rutaContribuyente}    añoNaci
+    ${añoNaci}=    TaxpayerController.Get Attribute    añoNaci    0
     Select From List By Label  name=clientControl$ddlYearActorBirthday     ${añoNaci}
 
 Primer apellido del contribuyente
 
     Click Element    name=clientControl$textActorLFNameCommercialName
-    ${primerApellido}=    Leer Xml    ${rutaContribuyente}    primerApe
+    ${primerApellido}=    TaxpayerController.Get Attribute    primerApe    0
     Input Text         name=clientControl$textActorLFNameCommercialName    ${primerApellido}
 
 Número de identificacion del contribuyente
 
-    ${ID}=    Leer Xml     ${rutaContribuyente}    identificacion
+    ${ID}=    TaxpayerController.Get Attribute    identificacion    0
     Click Element    name=clientControl$textActorIdCard
     Input Text    name=clientControl$textActorIdCard    ${ID}
     Sleep    1s
 
 Género del contribuyente
 
-    ${genero}=    Leer Xml    ${rutaContribuyente}    genero
+    ${genero}=    TaxpayerController.Get Attribute    genero    0
     Click Element    name=clientControl$ddGenderName
     Select From List By Label    name=clientControl$ddGenderName    ${genero}      
     Wait Until Element Contains    name=clientControl$ddGenderName    ${genero}
@@ -222,19 +231,19 @@ Registro de información requerida en la sección Contribuyente
 
 Segundo nombre del contribuyente
   
-    ${segundoNombre}=    leer Xml    ${rutaContribuyente}    segundoNom
+    ${segundoNombre}=    TaxpayerController.Get Attribute    segundoNom    0
     Click Element    name=clientControl$textActorFSName
     Input Text     name=clientControl$textActorFSName    ${segundoNombre}
 
 Segundo apellido del contribuyente
 
-    ${comentario}=    Leer Xml    ${rutaContribuyente}    segundoApe
+    ${comentario}=    TaxpayerController.Get Attribute    segundoApe    0
     Click Element    name=clientControl$textActorLSName
     Input Text     name=clientControl$textActorLSName     ${comentario}
 
 Comentario del contribuyente
 
-    ${primerApellido}=    leer Xml    ${rutaContribuyente}    comentario
+    ${primerApellido}=    TaxpayerController.Get Attribute    comentario    0
     Click Element    name=clientControl$textCusPubStatusComment
     Input Text     name=clientControl$textCusPubStatusComment    ${primerApellido}
 
@@ -250,31 +259,31 @@ Registro de información opcional en la sección Contribuyente
 
 Nacionalidad del contribuyente
 
-    ${nacionalidad}=    leer Xml    ${rutaGeneralidadesContribuyente}    nacionalidad    
+    ${nacionalidad}=    GeneralitiesController.Get Attribute   nacionalidad     0   
     Click Element    name=clientControl$txtCustNationality
     Input Text     name=clientControl$txtCustNationality    ${nacionalidad}
 
 Profesion del contribuyente
 
-    ${profesion}=    leer Xml    ${rutaGeneralidadesContribuyente}    profesion
+    ${profesion}=    GeneralitiesController.Get Attribute    profesion    0
     Click Element    name=clientControl$txtCustOccupation
     Input Text     name=clientControl$txtCustOccupation   ${profesion}
 
 Numero Nis del contribuyente
 
-    ${numeroNis}=    leer Xml     ${rutaGeneralidadesContribuyente}    numeroNis
+    ${numeroNis}=    GeneralitiesController.Get Attribute   numeroNis    0
     Click Element    name=clientControl$txtNisNumber
     Input Text     name=clientControl$txtNisNumber   ${numeroNis}
 
 Estado civil del contribuyente
 
-    ${estadoCivil}=    leer Xml     ${rutaGeneralidadesContribuyente}    estadoCivil
+    ${estadoCivil}=    GeneralitiesController.Get Attribute  estadoCivil    0
     Click Element    name=clientControl$dlMaritalStatus
     Select From List By Label     name=clientControl$txtNisNumber   ${estadoCivil}
 
 Cuenta Enacal del contribuyente
 
-    ${cuentaEnacal}=    leer Xml     ${rutaGeneralidadesContribuyente}    cuentaEnacal
+    ${cuentaEnacal}=    GeneralitiesController.Get Attribute   cuentaEnacal    0
     Click Element    name=clientControl$txtCustEnacalNumber
     Input Text     name=clientControl$txtCustEnacalNumber   ${cuentaEnacal}
 
@@ -291,19 +300,19 @@ Registro de informacion de generalidades del contribuyente
 
 Tipo de teléfono del contribuyente
 
-    ${tipoTelefono}=    leer Xml    ${rutaTelefono}    tipoTelefono
+    ${tipoTelefono}=    MailController.Get Attribute    tipoTelefono    0
     Click Element    name=clientControl$dlTypePhoneName
     Select From List By Label     name=clientControl$dlTypePhoneName  ${tipoTelefono}
 
 Número de teléfono del contribuyente
 
-    ${numTelefono}=    leer Xml    ${rutaTelefono}    numTelefono
+    ${numTelefono}=    MailController.Get Attribute    numTelefono    0
     Click Element    name=clientControl$textPhoneNumber
     Input Text     name=clientControl$textPhoneNumber   ${numTelefono}
 
 Correo electrónico del contribuyente
 
-    ${correo}=    leer Xml    ${rutaTelefono}    correo
+    ${correo}=    MailController.Get Attribute   correo    0
     Click Element    name=clientControl$textEmailDefinition
     Input Text     name=clientControl$textEmailDefinition   ${correo}
 
@@ -318,26 +327,26 @@ Registro de teléfono y correo del contribuyente
 
 Tipo de dirección del contribuyente
 
-    ${tipoDireccion}=    Leer Xml    ${rutaDireccion}    tipoDireccion    
+    ${tipoDireccion}=    DirController.Get Attribute   tipoDireccion    0    
     Click Element    name=clientControl$ddlTypeAddress
     Select From List By Label    name=clientControl$ddlTypeAddress   ${tipoDireccion}    
 
 Edificio / casa del contribuyente
 
-    ${edificio}=    Leer Xml     ${rutaDireccion}    edificioCasa 
+    ${edificio}=    DirController.Get Attribute  edificioCasa    0 
     Click Element    name=clientControl$textAddressRealEstate
     Input Text    name=clientControl$textAddressRealEstate    ${edificio}
 
 Distrito de la dirección
 
-    ${distrito}=    Leer Xml     ${rutaDireccion}    distrito
+    ${distrito}=    DirController.Get Attribute  distrito    0
     Click Element    name=clientControl$dlHousingDevName
     Select From List By Label    name=clientControl$dlHousingDevName    ${distrito}
     Sleep    1s
    
 Barrio de la dirección
     Sleep    1s
-    ${barrio}=    Leer Xml     ${rutaDireccion}    barrio 
+    ${barrio}=    DirController.Get Attribute  barrio    0 
     Click Element    name=clientControl$dlZipCodeName
     Select From List By Label    name=clientControl$dlZipCodeName   ${barrio}
 
@@ -353,31 +362,31 @@ Registro de información requerida en la sección dirección
 
 Calle a la izquierda del inmueble
 
-    ${calleIzquierda}=    leer Xml     ${rutaDireccion}    calleIzquierda
+    ${calleIzquierda}=    DirController.Get Attribute    calleIzquierda    0
     Click Element    name=clientControl$textRealLeftStreet
     Input Text   name=clientControl$textRealLeftStreet    ${calleIzquierda}
 
 Calle a la derecha del inmueble
 
-    ${calleDerecha}=    leer Xml     ${rutaDireccion}    calleDerecha
+    ${calleDerecha}=    DirController.Get Attribute  calleDerecha    0
     Click Element    name=clientControl$textAddressRightStreet
     Input Text    name=clientControl$textAddressRightStreet   ${calleDerecha}
 
 Apartamento de la dirección
 
-    ${apartamento}=    leer Xml     ${rutaDireccion}    apartamento
+    ${apartamento}=    DirController.Get Attribute    apartamento    0
     Click Element    name=clientControl$textAddressApartment
     Input Text    name=clientControl$textAddressApartment    ${apartamento}
 
 Piso de la dirección
 
-    ${piso}=    leer Xml     ${rutaDireccion}    piso
+    ${piso}=    DirController.Get Attribute    piso    0
     Click Element    name=clientControl$textAddressFloor
     Input Text    name=clientControl$textAddressFloor   ${piso}
 
 Comentario de la dirección
 
-    ${direccion}=    Leer Xml     ${rutaDireccion}    direccion
+    ${direccion}=    DirController.Get Attribute    direccion    0
     Click Element    name=clientControl$textRealEstateStreet
     Input Text    name=clientControl$textRealEstateStreet    ${direccion}
     Sleep    1s
@@ -464,7 +473,7 @@ Autenticar credenciales
     Iniciar Grabacion    Autenticar credenciales   
     [Tags]    Test Login
     When Iniciar sesion
-    Detener Grabacion
+    [Teardown]    Detener Grabacion
 
 
 
@@ -480,7 +489,7 @@ Creacion de sujeto pasivo
     And Crear y aceptar el trámite
     And Aprobar el trámite
     Then Verificar trámite
-    Detener Grabacion
+   
     [Teardown]       Run Keywords    
     ...        Detener Grabacion     
     ...        Close All Browsers        

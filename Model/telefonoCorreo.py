@@ -2,8 +2,8 @@ import xml.etree.ElementTree as ET
 import inspect
 
 
-class telefonoCorreo:
-    def __init__(self, tipoTelefono, numTelefono, correo):
+class TelefonoCorreo:
+    def __init__(self, tipoTelefono, numTelefono=0, correo=0):
 
         self.tipoTelefono = tipoTelefono
         self.numTelefono = numTelefono

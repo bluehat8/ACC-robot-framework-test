@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- <Solicitante> -->
-<users>
-  <user>
+<ArrayOfSolicitante>
+  <Solicitante>
     <cedula>0011605011025T</cedula>
     <telefono>78451833</telefono>
     <cargo>Control de calidad</cargo>
     <correo>yanmz4110@gmail.com</correo>
-  </user>
-  <user>
+  </Solicitante>
+  <Solicitante>
     <cedula>6031403690000M</cedula>
     <telefono>12345678</telefono>
     <cargo>Etcetera</cargo>
     <correo>jcjj@gmail.com</correo>
-  </user>
-</users>
+  </Solicitante>
+</ArrayOfSolicitante>

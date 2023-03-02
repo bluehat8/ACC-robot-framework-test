@@ -3,8 +3,8 @@ import xml.etree.ElementTree as ET
 import inspect
 
 
-class contribGeneralidades:
-    def __init__(self, tipoPersona, primerNom, segundoNom, documentoID, diaNaci, mesNaci, añoNaci, comentario, primerApe, segundoApe, identificacion, genero):
+class ContribuNatural:
+    def __init__(self, tipoPersona, primerNom=0, segundoNom=0, documentoID=0, diaNaci=0, mesNaci=0, añoNaci=0, comentario=0, primerApe=0, segundoApe=0, identificacion=0, genero=0):
         self.tipoPersona = tipoPersona
         self.primerNom = primerNom
         self.segundoNom = segundoNom

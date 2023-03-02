@@ -1,14 +1,13 @@
-import XmlStorage
 import xml.etree.ElementTree as ET
 import inspect
 
 
 class User:
-    def __init__(self, user, passwork):
-        self.user = user
-        self.passwork = passwork
-        
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
     
+
     def get_element_names(self):
         elements = list(self.__dict__.keys())
 

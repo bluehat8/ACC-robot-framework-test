@@ -34,29 +34,29 @@ ${rolbasico}    usuario basico
 ${cookies}   
 
 
-*** Test Cases ***
-Test Login
-    [Documentation]    Guarda el mensaje de Pass o Fail en un archivo xml
-    [Tags]    Prueba
+# *** Test Cases ***
+# Test Login
+#     [Documentation]    Guarda el mensaje de Pass o Fail en un archivo xml
+#     [Tags]    Prueba
 
-    Abrir navegador
-    Given Iniciar sesion
-    Then Aplicar roles básicos
-    Click Button    name=linLogin
-    Sleep    2s
-    ${cookies}    Get Cookies
+#     Abrir navegador
+#     Given Iniciar sesion
+#     Then Aplicar roles básicos
+#     Click Button    name=linLogin
+#     Sleep    2s
+#     ${cookies}    Get Cookies
     
 
-Ir a trámites predeterminados
-      #Add Cookie    ASP.NET_SessionId    gwevteoa1qwjo2szbgwopwo0
-    Go To   https://almacc.tustributos.com/frames.aspx   
-    ${tempb}=    Get Title
-    Log To Console    New windows is: \ ${tempb}
-    Select Frame    name=fastway
-    Wait Until Element Is Visible    name=textSearchId
-    Click Element    name=buttonProceeding
-    Sleep     1s
-    Maximize Browser Window
+# Ir a trámites predeterminados
+#       #Add Cookie    ASP.NET_SessionId    gwevteoa1qwjo2szbgwopwo0
+#     Go To   https://almacc.tustributos.com/frames.aspx   
+#     ${tempb}=    Get Title
+#     Log To Console    New windows is: \ ${tempb}
+#     Select Frame    name=fastway
+#     Wait Until Element Is Visible    name=textSearchId
+#     Click Element    name=buttonProceeding
+#     Sleep     1s
+#     Maximize Browser Window
     
 
 

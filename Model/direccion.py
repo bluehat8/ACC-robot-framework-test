@@ -1,10 +1,9 @@
-import XmlStorage
 import xml.etree.ElementTree as ET
 import inspect
 
 
-class direccion:
-    def __init__(self, tipoDireccion, calleIzquierda, calleDerecha, edificioCasa, apartamento, piso, distrito, barrio, direccion):
+class Direccion:
+    def __init__(self, tipoDireccion, calleIzquierda=0, calleDerecha=0, edificioCasa=0, apartamento=0, piso=0, distrito=0, barrio=0, direccion=0):
         self.tipoDireccion = tipoDireccion
         self.calleIzquierda = calleIzquierda
         self.calleDerecha = calleDerecha

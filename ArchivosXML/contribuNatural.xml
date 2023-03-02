@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<users>
-  <user>
+<ArrayOfContribuNatural>
+  <ContribuNatural>
+    
     <tipoPersona>Natural</tipoPersona>
     <primerNom>Juan</primerNom>
     <segundoNom>Pedro</segundoNom>
@@ -11,12 +12,12 @@
     <comentario>Este es un contribuyente natural de prueba QA</comentario>
     <primerApe>Fulano</primerApe>
     <segundoApe>Sipriano</segundoApe>   
-    <identificacion>90011234567890Prueb6ss76</identificacion>
+    <identificacion>9ariccpruebai</identificacion>
     <genero>Masculino</genero>
 
-    </user>
+  </ContribuNatural>
 
     <output>
-        <numerocontribuyente>01-2023-5739610</numerocontribuyente>
+        <numerocontribuyente>01-2023-5739621</numerocontribuyente>
     </output>
-</users>
+</ArrayOfContribuNatural>

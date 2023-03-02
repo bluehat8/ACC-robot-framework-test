@@ -15,9 +15,10 @@ p2 = Person.Person("Jane", 25)
 person_list = [p1,p2]
 
 xml_str=XmlStorage.list_to_xml(person_list)
-#print(xml_str)
+print(xml_str)
 
-XmlStorage.create_xml(xml_str, "ArchivosXML/Persona2.xml")
+#XmlStorage.create_xml(xml_str, "ArchivosXML/Persona2.xml")
+xml_to_str= XmlStorage.xml_to_str("ArchivosXML/Person.xml")
 
 element_names = p1.get_element_names()
 
@@ -27,6 +28,6 @@ def get_person_data(xml_str, element_names):
                                  attributes=element_names, include_output=False)
 
 print("====================================================")
-for person in get_person_data(xml_str, element_names):
+for person in get_person_data(xml_to_str, element_names):
     print(person.name, person.age)
     

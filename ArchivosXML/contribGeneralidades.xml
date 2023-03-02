@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- <Generalidades del Contribuyente-->
-<users>
-  <user>
+<ArrayOfContribGeneralidades>
+  <ContribGeneralidades>
     <nacionalidad>Nicaraguense</nacionalidad>
     <profesion>Control de calidad</profesion>
     <numeroNis>1234</numeroNis>
     <estadoCivil>Soltero/a</estadoCivil>
     <cuentaEnacal>4321</cuentaEnacal>
-    </user>
-    <user>
+  </ContribGeneralidades>
+  <ContribGeneralidades>
       <nacionalidad>Nicaraguense</nacionalidad>
       <profesion>Ing. de sistemas</profesion>
       <numeroNis>4321</numeroNis>
       <estadoCivil>Soltero/a</estadoCivil>
       <cuentaEnacal>8765</cuentaEnacal>
-      </user>
-</users>
+  </ContribGeneralidades>
+</ArrayOfContribGeneralidades>
