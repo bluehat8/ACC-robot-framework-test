@@ -10,8 +10,18 @@ Library    ../Controller/TaxpayerController.py
 Library    ../Controller/DirController.py
 Library    ../Controller/GeneralitiesController.py
 Library    ../Controller/MailController.py
+Library     OperatingSystem
+
+
 
 *** Keywords ***
+
+Save Cookies To File
+    [Arguments]    ${file_path}
+    ${cookies}    Get Cookies
+    ${cookie_list}=    Evaluate    json.dumps($cookies)
+    Create File    ${file_path}    ${cookie_list}
+
 
 Abrir Navegador
     Open Browser    https://almacc.tustributos.com    chrome
@@ -461,6 +471,7 @@ ${rutaDireccion}    ArchivosXML/direccion.xml
 ${rutaComentarioTramite}    ArchivosXML/comentarioTramite.xml
 ${rutaGeneralidadesContribuyente}    ArchivosXML/contribGeneralidades.xml
 ${rutaTelefono}     ArchivosXML/telefonoCorreo.xml
+${rutaCookies}    cookies.txt
 
 
 
@@ -470,10 +481,15 @@ ${rutaTelefono}     ArchivosXML/telefonoCorreo.xml
 Autenticar credenciales
     [Documentation]    Se automatizan las pruebas para autenticar el inicio de sesión en ARI CC
     Given Abrir Navegador
+    ${cookies}=  Get Cookies
     Iniciar Grabacion    Autenticar credenciales   
     [Tags]    Test Login
     When Iniciar sesion
-    [Teardown]    Detener Grabacion
+    Save Cookies To File    cookies.txt
+    [Teardown]    Run Keywords
+    ...    Detener Grabacion
+
+
 
 
 

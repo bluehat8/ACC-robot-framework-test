@@ -2,12 +2,24 @@
 Documentation     Prueba de Robot Framework que guarda un mensaje si pasó o no el test en el archivo XML.
 Library    Selenium2Library
 Library    ScreenCapLibrary
+Library    OperatingSystem
+
 
 
 *** Variables ***
 ${mensaje}=    aprobado
 
 *** Keywords ***
+
+Load Cookies From File
+    [Arguments]    ${file_path}
+    ${cookies}    Get File    ${file_path}
+    FOR    ${cookie}      IN      @{cookies}
+        Add Cookie    ${cookie}
+    END
+
+
+
 
 LogError
     Fail
